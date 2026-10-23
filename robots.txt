@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vortexcompanybr.com.br/sitemap.xml
