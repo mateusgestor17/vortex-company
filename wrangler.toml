@@ -1,4 +1,6 @@
-# Cloudflare Pages — site estático (sem etapa de build)
+# Cloudflare Workers — site estático (sem etapa de build)
 name = "vortex-company"
-pages_build_output_dir = "."
 compatibility_date = "2026-10-01"
+
+[assets]
+directory = "./public"
