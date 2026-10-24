@@ -233,7 +233,7 @@
     return {
       hero: mobile ? { x: 0, y: 0.35, scale: 0.78, opacity: 0.55 } : tablet ? { x: 1.2, y: 0, scale: 0.9, opacity: 0.85 } : { x: 1.85, y: 0, scale: 1, opacity: 1 },
       about: { x: 0, y: 0, scale: 1.35, opacity: 0.16 },
-      journey: mobile ? { x: 0, y: 1.05, scale: 0.6, opacity: 1 } : tablet ? { x: 1.3, y: 0, scale: 0.78, opacity: 1 } : { x: 1.75, y: 0, scale: 0.92, opacity: 1 },
+      journey: mobile ? { x: 0, y: 0.85, scale: 0.55, opacity: 1 } : tablet ? { x: 1.3, y: 0, scale: 0.78, opacity: 1 } : { x: 1.75, y: 0, scale: 0.92, opacity: 1 },
     };
   }
   let L = layout();
