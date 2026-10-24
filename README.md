@@ -1,7 +1,7 @@
 # Vortex Company — Site institucional
 
 Site da **Vortex Company**, agência de marketing e vendas.
-Estático (HTML, CSS e JavaScript puro), sem etapa de build — pronto para o Cloudflare Pages.
+Estático (HTML, CSS e JavaScript puro), sem etapa de build — publicado no Cloudflare Pages.
 
 ## Estrutura
 
@@ -30,10 +30,8 @@ python3 -m http.server 8080 -d public
 # abra http://localhost:8080
 ```
 
-## Publicação (Cloudflare Workers)
+## Publicação (Cloudflare Pages)
 
-O repositório está conectado a um Worker chamado `vortex-company` no Cloudflare.
-A cada `git push` na branch `main`, o Cloudflare roda `npx wrangler deploy` e o site é atualizado.
-A configuração está em `wrangler.toml`; arquivos que não devem ir para o ar ficam em `.assetsignore`.
-
-Domínio: no Worker, **Settings → Domains & Routes → Add → Custom domain** → `vortexcompanybr.com.br`.
+O repositório está conectado ao projeto Pages `vortex-company` no Cloudflare, com os domínios
+`vortexcompanybr.com.br` e `www.vortexcompanybr.com.br`.
+A cada `git push` na branch `main` o site é atualizado. O `wrangler.toml` diz ao Pages para publicar a pasta `public/`.
