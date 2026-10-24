@@ -147,6 +147,7 @@
     $$(".tick").forEach((el) => (el.textContent = el.dataset.to));
     $$(".svc").forEach((s) => s.classList.add("is-in"));
     $$(".player__video").forEach((v) => (v.controls = true));
+    $$(".vis--gmb .lp").forEach((lp) => lp.classList.add("is-ranked"));
     $(".wa-float").classList.add("is-visible");
     // jornada sem pin: mostra todas as etapas em sequência
     $$(".jstep").forEach((s) => { s.style.position = "relative"; s.classList.add("is-active"); s.style.marginBottom = "60px"; });
@@ -406,6 +407,27 @@
         .set(card, { x: pos(0), background: "#fff" });
       tl.invalidate();
       return () => tl.kill();
+    },
+    gmb() {
+      // perfil otimizado sobe do 3º para o 1º lugar, em loop
+      const lp = $(".vis--gmb .lp"), pin = $(".vis--gmb .pin--main");
+      const star = $(".lp__item--star", lp), others = $$(".lp__item:not(.lp__item--star)", lp);
+      const set = (ranked) => {
+        const pos = ranked ? [0, 1, 2] : [2, 0, 1]; // estrela, concorrente A, concorrente B
+        [star, ...others].forEach((el, i) => { el.style.setProperty("--pos", pos[i]); $(".lp__rank", el).textContent = pos[i] + 1 + "º"; });
+        lp.classList.toggle("is-ranked", ranked);
+        $("b", pin).textContent = ranked ? "1" : "3";
+        pin.classList.toggle("is-first", ranked);
+      };
+      set(false);
+      const timers = [];
+      const cycle = () => {
+        timers.push(setTimeout(() => set(true), 1400));
+        timers.push(setTimeout(() => set(false), 7400));
+        timers.push(setTimeout(cycle, 8600));
+      };
+      cycle();
+      return () => { timers.forEach(clearTimeout); set(true); };
     },
     video() {
       const v = $(".player__video"), tl = $(".vis--video .timeline"), curEl = $(".player__cur");
