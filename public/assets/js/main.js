@@ -30,9 +30,62 @@
       </article>`).join("");
     box.hidden = false;
   }
-  if (Array.isArray(DATA.feedbacks) && DATA.feedbacks.length) {
-    $("#feedbacksGrid").innerHTML = DATA.feedbacks.map((f) => `<figure class="reveal-up"><img src="${esc(f.src)}" alt="${esc(f.alt || "Feedback de cliente")}" loading="lazy"></figure>`).join("");
+  const FB = Array.isArray(DATA.feedbacks) ? DATA.feedbacks : [];
+  if (FB.length) {
+    const track = $("#feedbacksGrid");
+    track.innerHTML = FB.map((f, i) => `
+      <figure class="fb__card" data-i="${i}" tabindex="0" role="button" aria-label="Ampliar feedback ${i + 1}">
+        <img src="${esc(f.src)}" alt="${esc(f.alt || "Feedback de cliente")}" loading="lazy" width="941" height="1672">
+        ${f.destaque ? `<figcaption>${esc(f.destaque)}</figcaption>` : ""}
+      </figure>`).join("");
+    $("#fbDots").innerHTML = FB.map((_, i) => `<i class="${i ? "" : "is-active"}"></i>`).join("");
     $("#feedbacks").hidden = false;
+
+    // indicador do carrossel no celular
+    const dots = $$("#fbDots i");
+    track.addEventListener("scroll", () => {
+      const cards = $$(".fb__card", track);
+      const mid = track.scrollLeft + track.clientWidth / 2;
+      let best = 0, dist = Infinity;
+      cards.forEach((c, i) => { const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < dist) { dist = d; best = i; } });
+      dots.forEach((d, i) => d.classList.toggle("is-active", i === best));
+    }, { passive: true });
+
+    // brilho e inclinação 3D seguindo o mouse
+    if (!mm("(pointer: coarse)")) $$(".fb__card", track).forEach((c) => {
+      c.addEventListener("pointermove", (e) => {
+        const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        c.style.setProperty("--mx", x * 100 + "%"); c.style.setProperty("--my", y * 100 + "%");
+        c.style.transform = `translateY(-10px) rotateY(${(x - 0.5) * 10}deg) rotateX(${(0.5 - y) * 8}deg)`;
+      });
+      c.addEventListener("pointerleave", () => (c.style.transform = ""));
+    });
+
+    // visualizador ampliado
+    const lb = $("#lightbox"), lbImg = $("img", lb), lbCap = $("figcaption", lb);
+    let cur = 0, lastFocus = null;
+    const show = (i) => {
+      cur = (i + FB.length) % FB.length;
+      lbImg.src = FB[cur].src; lbImg.alt = FB[cur].alt || "Feedback de cliente";
+      lbCap.textContent = `${FB[cur].destaque || ""}  ·  ${cur + 1} de ${FB.length}`.replace(/^ {2}· {2}/, "");
+    };
+    const open = (i) => { lastFocus = document.activeElement; show(i); lb.hidden = false; window.__lenis?.stop(); $(".lightbox__close", lb).focus(); };
+    const close = () => { lb.hidden = true; window.__lenis?.start(); lastFocus?.focus(); };
+    track.addEventListener("click", (e) => { const c = e.target.closest(".fb__card"); if (c) open(+c.dataset.i); });
+    track.addEventListener("keydown", (e) => { const c = e.target.closest(".fb__card"); if (c && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); open(+c.dataset.i); } });
+    $(".lightbox__close", lb).addEventListener("click", close);
+    $(".lightbox__nav--prev", lb).addEventListener("click", () => show(cur - 1));
+    $(".lightbox__nav--next", lb).addEventListener("click", () => show(cur + 1));
+    lb.addEventListener("click", (e) => { if (e.target === lb) close(); });
+    document.addEventListener("keydown", (e) => {
+      if (lb.hidden) return;
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowLeft") show(cur - 1);
+      if (e.key === "ArrowRight") show(cur + 1);
+    });
+    let sx = 0;
+    lb.addEventListener("touchstart", (e) => (sx = e.touches[0].clientX), { passive: true });
+    lb.addEventListener("touchend", (e) => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); });
   }
 
   /* ---------- Horário de atendimento (fuso de Brasília) ---------- */
@@ -41,20 +94,22 @@
     const get = (t) => parts.find((p) => p.type === t)?.value;
     const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(get("weekday"));
     const mins = (parseInt(get("hour"), 10) % 24) * 60 + parseInt(get("minute"), 10);
-    const weekday = day >= 1 && day <= 5;
-    const open = weekday && mins >= 540 && mins < 1080;
+    const workday = day >= 1 && day <= 6; // segunda a sábado
+    const open = workday && mins >= 540 && mins < 1080;
     const el = $("#openStatus");
     el.classList.toggle("is-open", open);
     el.classList.toggle("is-closed", !open);
     let msg;
     if (open) msg = "Aberto agora · fecha às 18h";
-    else if (weekday && mins < 540) msg = "Fechado · abre hoje às 9h";
-    else if (day >= 1 && day <= 4) msg = "Fechado · abre amanhã às 9h";
+    else if (workday && mins < 540) msg = "Fechado · abre hoje às 9h";
+    else if (day >= 1 && day <= 5) msg = "Fechado · abre amanhã às 9h";
     else msg = "Fechado · abre segunda às 9h";
     $(".status__text", el).textContent = msg;
     const rows = $$(".hours div");
     rows.forEach((r) => r.classList.remove("is-today"));
-    rows[weekday ? 0 : day === 6 ? 1 : 2].classList.add("is-today");
+    rows[workday ? 0 : 1].classList.add("is-today");
+    const g = $("#gbpStatus");
+    if (g) { g.textContent = open ? "Aberto" : "Fechado"; g.classList.toggle("is-closed", !open); }
   }
   updateOpenStatus();
   setInterval(updateOpenStatus, 60000);
@@ -79,6 +134,7 @@
     $$("[data-count]").forEach((el) => (el.textContent = el.dataset.count));
     $$(".tick").forEach((el) => (el.textContent = el.dataset.to));
     $$(".svc").forEach((s) => s.classList.add("is-in"));
+    $$(".player__video").forEach((v) => (v.controls = true));
     $(".wa-float").classList.add("is-visible");
     // jornada sem pin: mostra todas as etapas em sequência
     $$(".jstep").forEach((s) => { s.style.position = "relative"; s.classList.add("is-active"); s.style.marginBottom = "60px"; });
@@ -97,6 +153,7 @@
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
     lenis.stop();
+    window.__lenis = lenis;
   }
   $$('a[href^="#"]').forEach((a) => a.addEventListener("click", (e) => {
     const id = a.getAttribute("href");
@@ -274,9 +331,9 @@
       vis.addEventListener("pointermove", (e) => {
         const r = vis.getBoundingClientRect();
         const dx = (e.clientX - r.left) / r.width - 0.5, dy = (e.clientY - r.top) / r.height - 0.5;
-        gsap.to($$(".float-card, .gmb-card, .code", inner), { x: dx * 26, y: dy * 26, duration: 0.8, ease: "power3.out" });
+        gsap.to($$(".float-card, .gbp, .gchip", inner), { x: dx * 26, y: dy * 26, duration: 0.8, ease: "power3.out" });
       });
-      vis.addEventListener("pointerleave", () => gsap.to($$(".float-card, .gmb-card, .code", inner), { x: 0, y: 0, duration: 1, ease: "expo.out" }));
+      vis.addEventListener("pointerleave", () => gsap.to($$(".float-card, .gbp, .gchip", inner), { x: 0, y: 0, duration: 1, ease: "expo.out" }));
     }
   });
 
@@ -335,13 +392,39 @@
       tl.invalidate();
       return () => tl.kill();
     },
-    gmb() {
-      const r = $(".vis--gmb .rank");
-      const o = { v: 9 };
-      const tw = gsap.to(o, { v: 1, duration: 2.4, ease: "power2.inOut", delay: 0.4, onUpdate: () => (r.textContent = Math.round(o.v)) });
-      return () => tw.kill();
+    video() {
+      const v = $(".player__video"), tl = $(".vis--video .timeline"), curEl = $(".player__cur");
+      let raf;
+      const sync = () => {
+        if (v.duration) {
+          tl.style.setProperty("--p", v.currentTime / v.duration);
+          curEl.textContent = "0:" + String(Math.floor(v.currentTime)).padStart(2, "0");
+        }
+        raf = requestAnimationFrame(sync);
+      };
+      v.play().catch(() => (v.controls = true));
+      sync();
+      return () => { v.pause(); cancelAnimationFrame(raf); };
     },
   };
+
+  /* ---------- Feedbacks: cartões se abrem em leque ---------- */
+  const fbCards = $$(".fb__card");
+  if (fbCards.length) {
+    if (mm("(min-width: 761px)")) {
+      const n = fbCards.length;
+      gsap.from(fbCards, {
+        x: (i, el) => { const t = el.parentElement.getBoundingClientRect(), r = el.getBoundingClientRect(); return (t.left + t.width / 2) - (r.left + r.width / 2); },
+        y: 120,
+        rotate: (i) => (i - (n - 1) / 2) * 7,
+        scale: 0.86,
+        ease: "none",
+        scrollTrigger: { trigger: ".fb", start: "top 95%", end: "top 30%", scrub: 1, invalidateOnRefresh: true },
+      });
+    } else {
+      gsap.from(fbCards, { opacity: 0, x: 80, stagger: 0.12, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: ".fb", start: "top 85%" } });
+    }
+  }
 
   /* ---------- Processo ---------- */
   gsap.to(".process__line span", { scaleX: 1, ease: "none", scrollTrigger: { trigger: ".process__grid", start: "top 85%", end: "bottom 60%", scrub: true } });

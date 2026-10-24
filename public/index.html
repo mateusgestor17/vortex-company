@@ -36,7 +36,7 @@
     "hasMap": "https://maps.google.com/?cid=4198462059883251963",
     "openingHoursSpecification": [{
       "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
       "opens": "09:00", "closes": "18:00"
     }],
     "areaServed": "BR",
@@ -278,19 +278,37 @@
           <div class="svc__visual">
             <div class="vis vis--site">
               <div class="browser">
-                <div class="browser__bar"><i></i><i></i><i></i><span>suaempresa.com.br</span></div>
-                <div class="browser__body">
-                  <div class="b-nav"><span></span><span></span><span></span><span></span></div>
-                  <div class="b-hero"><div class="b-h1"></div><div class="b-h2"></div><div class="b-btn"></div></div>
-                  <div class="b-img"></div>
-                  <div class="b-cards"><span></span><span></span><span></span></div>
+                <div class="browser__bar"><i></i><i></i><i></i><span>vidracariacristallo.com.br</span></div>
+                <div class="vsite" aria-hidden="true">
+                  <div class="vsite__scroll">
+                    <header class="vs-nav">
+                      <b class="vs-logo"><i></i><span>CRISTALLO<small>vidraçaria</small></span></b>
+                      <nav><span>Serviços</span><span>Obras</span><span>Contato</span></nav>
+                      <span class="vs-btn">Orçamento</span>
+                    </header>
+                    <section class="vs-hero">
+                      <div class="vs-hero__glass"></div>
+                      <div class="vs-hero__text">
+                        <small>Vidros sob medida</small>
+                        <h4>Box, espelhos e sacadas com <em>acabamento perfeito</em>.</h4>
+                        <p>Medição gratuita, instalação rápida e garantia em todos os serviços.</p>
+                        <span class="vs-btn vs-btn--wa">Pedir orçamento no WhatsApp</span>
+                      </div>
+                    </section>
+                    <section class="vs-services">
+                      <h5>Nossos serviços</h5>
+                      <div class="vs-grid">
+                        <div class="vs-card"><span class="vs-ill vs-ill--box"></span><b>Box para banheiro</b><small>Temperado 8 mm</small></div>
+                        <div class="vs-card"><span class="vs-ill vs-ill--mirror"></span><b>Espelhos</b><small>Decorativos e lapidados</small></div>
+                        <div class="vs-card"><span class="vs-ill vs-ill--rail"></span><b>Sacadas</b><small>Guarda-corpo em vidro</small></div>
+                        <div class="vs-card"><span class="vs-ill vs-ill--window"></span><b>Esquadrias</b><small>Janelas e portas</small></div>
+                      </div>
+                    </section>
+                    <section class="vs-strip"><span>Orçamento em 24h</span><span>Vidro certificado</span><span>Garantia de instalação</span></section>
+                    <section class="vs-cta"><b>Seu projeto em vidro começa com uma conversa.</b><span class="vs-btn vs-btn--wa">Falar no WhatsApp</span></section>
+                  </div>
+                  <span class="vs-cursor"></span>
                 </div>
-              </div>
-              <div class="code">
-                <span><b>&lt;section</b> class=<i>"hero"</i><b>&gt;</b></span>
-                <span>&nbsp;&nbsp;<b>&lt;h1&gt;</b>Venda mais<b>&lt;/h1&gt;</b></span>
-                <span>&nbsp;&nbsp;<b>&lt;a</b> href=<i>"wa.me"</i><b>&gt;</b></span>
-                <span><b>&lt;/section&gt;</b></span>
               </div>
               <div class="float-card float-card--speed"><small>Velocidade</small><b><span class="tick" data-to="98">0</span>/100</b><div class="ring"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15"/><circle class="ring__val" cx="18" cy="18" r="15"/></svg></div></div>
             </div>
@@ -331,9 +349,9 @@
             <div class="vis vis--video">
               <div class="player">
                 <div class="player__screen">
-                  <div class="player__scene s1"></div><div class="player__scene s2"></div><div class="player__scene s3"></div>
-                  <span class="rec">● REC</span>
-                  <span class="player__play">▶</span>
+                  <video class="player__video" poster="assets/video/vortex-motion-poster.jpg" muted loop playsinline preload="metadata" aria-label="Vídeo em motion graphics da Vortex Company"><source src="assets/video/vortex-motion.mp4" type="video/mp4"><source src="assets/video/vortex-motion.webm" type="video/webm"></video>
+                  <span class="rec">● Motion graphics</span>
+                  <span class="player__time"><span class="player__cur">0:00</span> / 0:10</span>
                 </div>
                 <div class="timeline">
                   <div class="timeline__track t1"><i></i><i></i><i></i><i></i></div>
@@ -365,12 +383,25 @@
                 <span class="pin pin--main"><span class="logo-mark"></span></span>
                 <span class="pulse"></span>
               </div>
-              <div class="gmb-card">
-                <b>Sua Empresa</b>
-                <div class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span><em>5,0</em></div>
-                <small>Aberto agora · Rota · Ligar</small>
-              </div>
-              <div class="float-card float-card--rank"><small>Posição no mapa</small><b>#<span class="rank">9</span></b></div>
+              <div class="gchip"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>agência de marketing perto de mim</div>
+              <a class="gbp" href="https://maps.google.com/?cid=4198462059883251963" target="_blank" rel="noopener" aria-label="Abrir o perfil da Vortex Company no Google Maps">
+                <div class="gbp__cover"><span class="logo-mark"></span><span class="logo-word"></span></div>
+                <div class="gbp__body">
+                  <b class="gbp__name">Vortex Company - Agência de Marketing</b>
+                  <span class="gbp__cat">Agência de marketing</span>
+                  <div class="gbp__actions">
+                    <span><i><svg viewBox="0 0 24 24"><path d="M12 3 21 12l-9 9-9-9z"/><path d="M10 14v-3h5l-2-2m2 2-2 2"/></svg></i>Rotas</span>
+                    <span><i><svg viewBox="0 0 24 24"><path d="M7 4h10v17l-5-4-5 4z"/></svg></i>Salvar</span>
+                    <span><i><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></i>Ligar</span>
+                    <span><i><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg></i>Compartilhar</span>
+                  </div>
+                  <ul class="gbp__info">
+                    <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span><b class="gbp__status" id="gbpStatus">Aberto</b> · Seg. a sáb. 09:00–18:00</span></li>
+                    <li><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span>(47) 99162-5752</span></li>
+                    <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span>vortexcompanybr.com.br</span></li>
+                  </ul>
+                </div>
+              </a>
             </div>
           </div>
           <div class="svc__body">
@@ -402,31 +433,29 @@
     <section class="testimonials" id="depoimentos">
       <div class="container">
         <p class="eyebrow">Quem confia na Vortex</p>
-        <h2 class="section-title">O que nossos <em>clientes</em> dizem.</h2>
+        <h2 class="section-title">Feedbacks de quem <em>já cresceu</em> com a gente.</h2>
+        <p class="section-lead">Resultados reais que nossos clientes compartilharam com a gente. Toque em uma imagem para ampliar.</p>
 
         <!-- Depoimentos em texto: preenchidos por assets/js/data.js -->
         <div class="reviews" id="reviews" hidden></div>
 
-        <div class="google-card reveal-up">
-          <div class="google-card__left">
-            <svg class="g-logo" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
-            <div>
-              <h3>Avaliações no Google</h3>
-              <p>Veja o que os clientes falam da Vortex Company no nosso perfil do Google — ou deixe a sua avaliação.</p>
-            </div>
-          </div>
-          <div class="google-card__actions">
-            <a class="btn btn--light magnetic" href="https://maps.google.com/?cid=4198462059883251963" target="_blank" rel="noopener"><span>Ver avaliações</span><svg class="ico" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
-          </div>
+        <!-- Galeria de feedbacks (prints de clientes): preenchida por assets/js/data.js -->
+        <div class="fb" id="feedbacks" hidden>
+          <div class="fb__track" id="feedbacksGrid"></div>
+          <div class="fb__dots" id="fbDots" aria-hidden="true"></div>
         </div>
 
-        <!-- Galeria de feedbacks (prints de clientes): preenchida por assets/js/data.js -->
-        <div class="feedbacks" id="feedbacks" hidden>
-          <h3 class="feedbacks__title">Feedbacks de clientes</h3>
-          <div class="feedbacks__grid" id="feedbacksGrid"></div>
-        </div>
+        <a class="fb__google" href="https://maps.google.com/?cid=4198462059883251963" target="_blank" rel="noopener">Ver também nossas avaliações no Google <svg class="ico" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
       </div>
     </section>
+
+    <!-- Visualizador de feedbacks -->
+    <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Feedback ampliado">
+      <button class="lightbox__close" aria-label="Fechar">×</button>
+      <button class="lightbox__nav lightbox__nav--prev" aria-label="Anterior">‹</button>
+      <figure class="lightbox__fig"><img alt=""><figcaption></figcaption></figure>
+      <button class="lightbox__nav lightbox__nav--next" aria-label="Próximo">›</button>
+    </div>
 
     <!-- CTA -->
     <section class="cta">
@@ -452,8 +481,7 @@
           <div class="status" id="openStatus"><span class="status__dot"></span><span class="status__text">Verificando horário…</span></div>
 
           <dl class="hours">
-            <div><dt>Segunda a sexta</dt><dd>09h às 18h</dd></div>
-            <div><dt>Sábado</dt><dd>Fechado</dd></div>
+            <div><dt>Segunda a sábado</dt><dd>09h às 18h</dd></div>
             <div><dt>Domingo</dt><dd>Fechado</dd></div>
           </dl>
 
@@ -479,7 +507,7 @@
         <div class="footer__cols">
           <div><h6>Navegação</h6><a href="#sobre">Sobre</a><a href="#jornada">Método</a><a href="#servicos">Serviços</a><a href="#depoimentos">Clientes</a><a href="#contato">Contato</a></div>
           <div><h6>Serviços</h6><span>Meta Ads</span><span>Google Ads</span><span>Criação de Sites</span><span>Implementação de CRM</span><span>Criação de Vídeos</span><span>Google Meu Negócio</span></div>
-          <div><h6>Contato</h6><a data-wa href="#" target="_blank" rel="noopener">(47) 99162-5752</a><span>Seg a sex · 09h às 18h</span><span>Sáb e dom · Fechado</span></div>
+          <div><h6>Contato</h6><a data-wa href="#" target="_blank" rel="noopener">(47) 99162-5752</a><span>Seg a sáb · 09h às 18h</span><span>Domingo · Fechado</span></div>
         </div>
       </div>
       <div class="footer__giant" aria-hidden="true">VORTEX</div>
