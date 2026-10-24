@@ -41,25 +41,37 @@
     $("#fbDots").innerHTML = FB.map((_, i) => `<i class="${i ? "" : "is-active"}"></i>`).join("");
     $("#feedbacks").hidden = false;
 
-    // indicador do carrossel no celular
+    // carrossel: setas, indicador e avanço automático
+    const cards = $$(".fb__card", track);
     const dots = $$("#fbDots i");
-    track.addEventListener("scroll", () => {
-      const cards = $$(".fb__card", track);
+    const prev = $(".fb__arrow--prev"), next = $(".fb__arrow--next");
+    const step = () => cards[0].offsetWidth + parseFloat(getComputedStyle(track).columnGap || 18);
+    const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    const syncNav = () => {
       const mid = track.scrollLeft + track.clientWidth / 2;
       let best = 0, dist = Infinity;
-      cards.forEach((c, i) => { const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < dist) { dist = d; best = i; } });
+      cards.forEach((c, i) => { const d = Math.abs(c.offsetLeft - track.offsetLeft + c.offsetWidth / 2 - mid); if (d < dist) { dist = d; best = i; } });
+      if (atEnd()) best = cards.length - 1;
+      if (track.scrollLeft < 4) best = 0;
       dots.forEach((d, i) => d.classList.toggle("is-active", i === best));
-    }, { passive: true });
-
-    // brilho e inclinação 3D seguindo o mouse
-    if (!mm("(pointer: coarse)")) $$(".fb__card", track).forEach((c) => {
-      c.addEventListener("pointermove", (e) => {
-        const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-        c.style.setProperty("--mx", x * 100 + "%"); c.style.setProperty("--my", y * 100 + "%");
-        c.style.transform = `translateY(-10px) rotateY(${(x - 0.5) * 10}deg) rotateX(${(0.5 - y) * 8}deg)`;
-      });
-      c.addEventListener("pointerleave", () => (c.style.transform = ""));
-    });
+      prev.disabled = track.scrollLeft < 4;
+      next.disabled = atEnd();
+      $("#fbDots").style.visibility = track.scrollWidth > track.clientWidth + 4 ? "visible" : "hidden";
+    };
+    track.addEventListener("scroll", syncNav, { passive: true });
+    addEventListener("resize", syncNav);
+    syncNav();
+    prev.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
+    next.addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
+    let paused = false;
+    ["pointerenter", "focusin", "touchstart"].forEach((ev) => track.addEventListener(ev, () => (paused = true), { passive: true }));
+    ["pointerleave", "focusout"].forEach((ev) => track.addEventListener(ev, () => (paused = false)));
+    if (!reduced) setInterval(() => {
+      if (paused || !$("#lightbox").hidden || track.scrollWidth <= track.clientWidth + 4) return;
+      const r = track.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return;
+      atEnd() ? track.scrollTo({ left: 0, behavior: "smooth" }) : track.scrollBy({ left: step(), behavior: "smooth" });
+    }, 3500);
 
     // visualizador ampliado
     const lb = $("#lightbox"), lbImg = $("img", lb), lbCap = $("figcaption", lb);
@@ -338,8 +350,11 @@
   });
 
   const loops = {};
-  function start(name) { if (loops[name] || !LOOPS[name]) return; loops[name] = LOOPS[name](); }
-  function stop(name) { if (loops[name]) { loops[name](); loops[name] = null; } }
+  function start(name) {
+    if (loops[name] || !LOOPS[name]) return;
+    try { loops[name] = LOOPS[name](); } catch (e) { console.warn("animação de serviço:", name, e); }
+  }
+  function stop(name) { if (loops[name]) { try { loops[name](); } catch (e) {} loops[name] = null; } }
 
   const LOOPS = {
     meta() {
@@ -408,22 +423,11 @@
     },
   };
 
-  /* ---------- Feedbacks: cartões se abrem em leque ---------- */
-  const fbCards = $$(".fb__card");
-  if (fbCards.length) {
-    if (mm("(min-width: 761px)")) {
-      const n = fbCards.length;
-      gsap.from(fbCards, {
-        x: (i, el) => { const t = el.parentElement.getBoundingClientRect(), r = el.getBoundingClientRect(); return (t.left + t.width / 2) - (r.left + r.width / 2); },
-        y: 120,
-        rotate: (i) => (i - (n - 1) / 2) * 7,
-        scale: 0.86,
-        ease: "none",
-        scrollTrigger: { trigger: ".fb", start: "top 95%", end: "top 30%", scrub: 1, invalidateOnRefresh: true },
-      });
-    } else {
-      gsap.from(fbCards, { opacity: 0, x: 80, stagger: 0.12, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: ".fb", start: "top 85%" } });
-    }
+  /* ---------- Feedbacks: entrada ---------- */
+  if ($$(".fb__card").length) {
+    // o deslocamento vai no contêiner; nos cartões só a opacidade (o transform deles é do hover em CSS)
+    gsap.from(".fb", { y: 60, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: ".fb", start: "top 85%" } });
+    gsap.from(".fb__card", { opacity: 0, stagger: 0.12, duration: 1, ease: "power2.out", scrollTrigger: { trigger: ".fb", start: "top 85%" } });
   }
 
   /* ---------- Processo ---------- */
