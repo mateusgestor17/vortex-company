@@ -1,0 +1,15 @@
+{
+  "logo_icone": "../../../site/assets/logo-icone.svg",
+  "logo_nome": "../../../site/assets/logo-nome.svg",
+  "cor_destaque": "#3ddc84",
+  "frases": ["Mais clientes.", "Mais <em>vendas.</em>", "Mais faturamento."],
+  "resultado": {
+    "rotulo": "Resultado real de cliente · agosto",
+    "prefixo": "R$ ",
+    "valor": 52000,
+    "texto": "faturados com <b>R$ 810</b> investidos em anúncios",
+    "selo": "200% da meta"
+  },
+  "cta": "Vamos fazer sua<br>empresa <em>girar?</em>",
+  "botao": "WhatsApp (47) 99162-5752"
+}

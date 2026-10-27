@@ -1,0 +1,83 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+/* As fontes são injetadas por gravar.js (@font-face com arquivos locais). */
+*{box-sizing:border-box;margin:0}
+html,body{width:1280px;height:720px;overflow:hidden;background:var(--bg,#050505);color:#f4f4f2;font-family:Display,sans-serif}
+#stage{position:absolute;inset:0;overflow:hidden}
+canvas{position:absolute;inset:0}
+.abs{position:absolute}
+em{font-family:Serif,serif;font-style:italic;font-weight:400}
+#logo{left:50%;top:44%;width:150px;transform:translate(-50%,-50%);color:#fff}
+#word{left:50%;top:66%;width:260px;transform:translate(-50%,-50%);color:#fff}
+svg{display:block;width:100%;height:auto}
+.kin{left:110px;font-size:92px;font-weight:800;letter-spacing:-4px;line-height:1;overflow:hidden;height:104px}
+.kin span{display:inline-block}
+#k0{top:170px}#k1{top:290px}#k2{top:410px}
+#card{left:50%;top:50%;width:880px;height:420px;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.16);border-radius:28px;background:linear-gradient(150deg,rgba(255,255,255,.07),rgba(255,255,255,.015));padding:48px 56px}
+#card small{font-size:18px;letter-spacing:4px;text-transform:uppercase;color:rgba(244,244,242,.6)}
+#money{font-size:110px;font-weight:800;letter-spacing:-5px;margin-top:18px;font-variant-numeric:tabular-nums}
+#inv{font-size:28px;color:rgba(244,244,242,.75);margin-top:6px;max-width:520px}
+#chart{position:absolute;right:40px;bottom:36px;width:420px;height:220px}
+#pill{position:absolute;right:56px;top:48px;padding:14px 22px;border-radius:999px;background:var(--accent,#3ddc84);color:#04260f;font-weight:800;font-size:26px}
+#cta{left:0;right:0;top:200px;text-align:center;font-size:96px;font-weight:800;letter-spacing:-4px;line-height:1}
+#wa{left:50%;top:470px;transform:translateX(-50%);padding:20px 34px;border-radius:999px;background:#25d366;color:#04260f;font-size:32px;font-weight:700;white-space:nowrap}
+#mini{left:50%;bottom:44px;width:150px;transform:translateX(-50%);color:#fff}
+#fade{inset:0;background:var(--bg,#050505);pointer-events:none}
+</style></head><body><div id="stage">
+<canvas id="c" width="1280" height="720"></canvas>
+<div id="logo" class="abs"></div><div id="word" class="abs"></div>
+<div id="k0" class="abs kin"><span></span></div><div id="k1" class="abs kin"><span></span></div><div id="k2" class="abs kin"><span></span></div>
+<div id="card" class="abs"><small id="rot"></small><div id="money"></div><div id="inv"></div><div id="pill"></div>
+<svg id="chart" viewBox="0 0 420 220"><path id="area" fill="rgba(255,255,255,.08)"/><path id="line" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><circle id="dot" r="9"/></svg></div>
+<div id="cta" class="abs"></div><div id="wa" class="abs"></div><div id="mini" class="abs"></div>
+<div id="fade" class="abs"></div>
+</div>
+<script>
+/* Cenas (10 s): 0–2,2 partículas formam o funil + logo · 2,4–4,7 frases cinéticas ·
+   4,6–7 cartão com resultado e gráfico · 6,9–10 chamada final + WhatsApp. */
+const C=window.CONFIG, $=id=>document.getElementById(id);
+document.documentElement.style.setProperty('--accent',C.cor_destaque||'#3ddc84');
+$('dot').setAttribute('fill',C.cor_destaque||'#3ddc84');
+$('logo').innerHTML=C.svg_icone; $('word').innerHTML=C.svg_nome; $('mini').innerHTML=C.svg_nome;
+C.frases.slice(0,3).forEach((f,i)=>$('k'+i).firstChild.innerHTML=f);
+$('rot').textContent=C.resultado.rotulo; $('inv').innerHTML=C.resultado.texto; $('pill').textContent=C.resultado.selo||'';
+if(!C.resultado.selo) $('pill').style.display='none';
+$('cta').innerHTML=C.cta; $('wa').textContent=C.botao;
+const cl=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)), p=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,4), eio=x=>x<.5?8*x**4:1-Math.pow(-2*x+2,4)/2;
+let s=7;const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
+const P=[];for(let i=0;i<2600;i++){P.push({t:Math.pow(rnd(),.8),a:rnd()*6.283,ring:rnd()<.18,sx:rnd()*1280,sy:rnd()*720,sz:.4+rnd()*1.6,ph:rnd()*6.28})}
+const pts=[[0,200],[60,185],[110,170],[160,150],[210,140],[250,110],[300,90],[350,50],[400,20]];
+const ctx=$('c').getContext('2d');
+function render(t){
+  const form=eio(p(t,0,1.6)), out=eio(p(t,2.0,2.8)), back=eio(p(t,6.6,7.4));
+  const cardOn=eio(p(t,4.4,4.9))*(1-eio(p(t,6.6,7.0)));
+  const cx=640+out*380-back*380, cy=330, sc=1-out*.2, alpha=(1-out*.55-back*.15)*(1-cardOn*.75);
+  ctx.clearRect(0,0,1280,720);
+  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,520);g.addColorStop(0,'rgba(60,70,90,.35)');g.addColorStop(1,'rgba(5,5,5,0)');ctx.fillStyle=g;ctx.fillRect(0,0,1280,720);
+  for(const q of P){
+    const r=q.ring?190:180*Math.pow(1-q.t,1.25)+6, yy=q.ring?-172:-170+q.t*340, ang=q.a+t*(0.6+2.2*q.t);
+    const fx=cx+Math.cos(ang)*r*sc, fy=cy+(yy+Math.sin(ang)*r*.18)*sc;
+    const x=q.sx+(fx-q.sx)*form, y=q.sy+(fy-q.sy)*form, depth=(Math.sin(ang)+1)/2;
+    ctx.fillStyle='rgba(255,255,255,'+(alpha*(.25+.65*depth)*(.6+.4*Math.sin(t*3+q.ph)))+')';
+    ctx.beginPath();ctx.arc(x,y,q.sz*(.7+.5*depth),0,6.283);ctx.fill();
+  }
+  const l1=eo(p(t,1.0,1.8)), l1o=p(t,2.0,2.4);
+  $('logo').style.opacity=l1*(1-l1o);$('logo').style.transform='translate(-50%,-50%) scale('+(.6+.4*l1+l1o*.3)+')';
+  $('logo').style.filter='drop-shadow(0 0 '+(30*l1)+'px rgba(255,255,255,.5))';
+  const w1=eo(p(t,1.3,2.0));$('word').style.opacity=w1*(1-l1o);$('word').style.clipPath='inset(0 '+(100-w1*100)+'% 0 0)';
+  [['k0',2.4],['k1',2.85],['k2',3.3]].forEach(([id,s0])=>{const k=eo(p(t,s0,s0+.6)), o=eio(p(t,4.3,4.7));$(id).firstChild.style.transform='translateY('+(110-110*k-110*o)+'%)';});
+  const c=eo(p(t,4.6,5.2)), co=eio(p(t,6.6,7.0));
+  $('card').style.opacity=c*(1-co);$('card').style.transform='translate(-50%,-50%) scale('+(.92+.08*c-.04*co)+')';
+  const m=eio(p(t,4.9,6.2));$('money').textContent=(C.resultado.prefixo||'')+Math.round(C.resultado.valor*m).toLocaleString('pt-BR')+(C.resultado.sufixo||'');
+  const k=eio(p(t,5.0,6.3)), n=1+k*(pts.length-1), i=Math.floor(n), f=n-i;
+  const sub=pts.slice(0,i);if(i<pts.length){const a=pts[i-1],b=pts[i];sub.push([a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f])}
+  const d='M'+sub.map(q=>q.join(' ')).join(' L');$('line').setAttribute('d',d);
+  const last=sub[sub.length-1];$('area').setAttribute('d',d+' L'+last[0]+' 220 L0 220Z');$('dot').setAttribute('cx',last[0]);$('dot').setAttribute('cy',last[1]);
+  const pl=eo(p(t,6.1,6.45));$('pill').style.transform='scale('+pl+')';$('pill').style.opacity=pl;
+  const e=eo(p(t,6.9,7.5));$('cta').style.opacity=e;$('cta').style.transform='translateY('+(40-40*e)+'px)';
+  const wv=eo(p(t,7.2,7.8));$('wa').style.opacity=wv;$('wa').style.transform='translateX(-50%) scale('+(.85+.15*wv)+')';
+  $('mini').style.opacity=eo(p(t,7.5,8));
+  $('fade').style.opacity=Math.max(1-p(t,0,.35), p(t,9.6,10));
+}
+window.render=render;render(0);
+</script></body></html>

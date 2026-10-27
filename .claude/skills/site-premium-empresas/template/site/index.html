@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vortex Company — Agência de Marketing e Vendas</title>
+  <meta name="description" content="A Vortex Company é uma agência de marketing e vendas que já ajudou mais de 100 empresas a aumentar o faturamento com Meta Ads, Google Ads, sites, CRM, vídeos e Google Meu Negócio. Especialistas em prestadores de serviço.">
+  <meta name="theme-color" content="#050505">
+  <link rel="canonical" href="https://vortexcompanybr.com.br/">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Vortex Company">
+  <meta property="og:title" content="Vortex Company — Agência de Marketing e Vendas">
+  <meta property="og:description" content="Transformamos atenção em vendas. Mais de 100 empresas aceleradas com anúncios, CRM e processos comerciais.">
+  <meta property="og:url" content="https://vortexcompanybr.com.br/">
+  <meta property="og:image" content="https://vortexcompanybr.com.br/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261024c">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MarketingAgency",
+    "name": "Vortex Company - Agência de Marketing",
+    "url": "https://vortexcompanybr.com.br/",
+    "logo": "https://vortexcompanybr.com.br/assets/apple-touch-icon.png",
+    "telephone": "+55-47-99162-5752",
+    "taxID": "68.063.725/0001-62",
+    "hasMap": "https://maps.google.com/?cid=4198462059883251963",
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      "opens": "09:00", "closes": "18:00"
+    }],
+    "areaServed": "BR",
+    "description": "Agência de marketing e vendas especializada em prestadores de serviço: Meta Ads, Google Ads, criação de sites, implementação de CRM, vídeos e otimização do Google Meu Negócio."
+  }
+  </script>
+</head>
+<body>
+  <!-- Preloader -->
+  <div class="loader" aria-hidden="true">
+    <div class="loader__mark"><span class="logo-mark"></span></div>
+    <div class="loader__count"><span id="loaderNum">0</span>%</div>
+    <div class="loader__bar"><span></span></div>
+  </div>
+
+  <!-- Cena 3D (vórtice de partículas) -->
+  <canvas id="cena-3d" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"></span></div>
+
+  <!-- Navegação -->
+  <header class="nav">
+    <a href="#inicio" class="nav__logo" aria-label="Vortex Company — início">
+      <span class="logo-mark"></span>
+      <span class="logo-word"></span>
+    </a>
+    <nav class="nav__links" aria-label="Principal">
+      <a href="#sobre">Sobre</a>
+      <a href="#jornada">Método</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#depoimentos">Clientes</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <a class="btn btn--light btn--sm magnetic" data-wa href="#" target="_blank" rel="noopener">
+      <span>Fale com a gente</span>
+      <svg class="ico" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a>
+    <button class="nav__burger" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span></button>
+  </header>
+
+  <div class="mobile-menu" aria-hidden="true">
+    <a href="#sobre">Sobre</a>
+    <a href="#jornada">Método</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#depoimentos">Clientes</a>
+    <a href="#contato">Contato</a>
+    <a class="btn btn--wa" data-wa href="#" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+  </div>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+      <div class="hero__inner container">
+        <p class="eyebrow reveal-up"><span class="dot"></span> Agência de marketing &amp; vendas</p>
+        <h1 class="hero__title">
+          <span class="line"><span>Transformamos</span></span>
+          <span class="line"><span><em>atenção</em> em</span></span>
+          <span class="line"><span>vendas.</span></span>
+        </h1>
+        <p class="hero__sub reveal-up">Anúncios, CRM e processos comerciais trabalhando juntos para fazer o faturamento da sua empresa girar mais rápido.</p>
+        <div class="hero__cta reveal-up">
+          <a class="btn btn--light magnetic" data-wa href="#" target="_blank" rel="noopener">
+            <span>Quero vender mais</span>
+            <svg class="ico" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
+          <a class="btn btn--ghost magnetic" href="#jornada"><span>Conheça o método</span></a>
+        </div>
+      </div>
+      <div class="hero__stats container">
+        <div class="stat reveal-up"><strong><span data-count="100">0</span>+</strong><small>empresas<br>aceleradas</small></div>
+        <div class="stat reveal-up"><strong><span data-count="3">0</span>+</strong><small>anos de<br>experiência</small></div>
+        <div class="stat reveal-up"><strong>5</strong><small>etapas da jornada<br>do consumidor</small></div>
+      </div>
+      <a href="#sobre" class="scroll-hint" aria-label="Rolar para baixo"><span></span>Role</a>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Meta Ads</span><i>✦</i><span>Google Ads</span><i>✦</i><span>Criação de Sites</span><i>✦</i><span>CRM</span><i>✦</i><span>Vídeos</span><i>✦</i><span>Google Meu Negócio</span><i>✦</i><span>Processos Comerciais</span><i>✦</i>
+        <span>Meta Ads</span><i>✦</i><span>Google Ads</span><i>✦</i><span>Criação de Sites</span><i>✦</i><span>CRM</span><i>✦</i><span>Vídeos</span><i>✦</i><span>Google Meu Negócio</span><i>✦</i><span>Processos Comerciais</span><i>✦</i>
+      </div>
+    </div>
+
+    <!-- SOBRE -->
+    <section class="about" id="sobre">
+      <div class="container">
+        <p class="eyebrow">Sobre a Vortex</p>
+        <h2 class="about__text split-words">
+          Somos uma agência de marketing e vendas. Há mais de 3 anos ajudamos empresas a <em>faturar mais</em> unindo anúncios, tecnologia e processo comercial — porque tráfego sem venda é só barulho.
+        </h2>
+
+        <div class="about__grid">
+          <article class="about__card reveal-up">
+            <span class="about__num">01</span>
+            <h3>Nossa missão</h3>
+            <p>Fazer o faturamento dos nossos clientes crescer de forma previsível. Não entregamos curtidas, entregamos oportunidades de venda reais.</p>
+          </article>
+          <article class="about__card reveal-up">
+            <span class="about__num">02</span>
+            <h3>Especialistas em serviços</h3>
+            <p>Nossa especialidade são os <strong>prestadores de serviço</strong>. Entendemos o ciclo de decisão de quem vende confiança, agenda e atendimento.</p>
+          </article>
+          <article class="about__card reveal-up">
+            <span class="about__num">03</span>
+            <h3>Do clique ao contrato</h3>
+            <p>Atuamos na jornada inteira: atraímos o cliente certo, organizamos o atendimento no CRM e ajustamos o processo para fechar mais.</p>
+          </article>
+        </div>
+
+        <div class="about__bigstats">
+          <div class="bigstat reveal-up"><strong>+<span data-count="100">0</span></strong><span>empresas de diversos segmentos atendidas</span></div>
+          <div class="bigstat reveal-up"><strong>+<span data-count="3">0</span> anos</strong><span>de experiência gerando resultado</span></div>
+          <div class="bigstat reveal-up"><strong><em>crescendo</em></strong><span>e prontos para acelerar a sua empresa</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JORNADA DO CONSUMIDOR (pinada; o vórtice 3D se transforma a cada etapa) -->
+    <section class="journey" id="jornada">
+      <div class="journey__head container">
+        <p class="eyebrow">Nosso método</p>
+        <h2 class="section-title">A <em>Jornada do Consumidor</em></h2>
+        <p class="section-lead">Toda venda percorre um caminho. Nós cuidamos de cada etapa para que nenhum cliente em potencial se perca no meio dele.</p>
+      </div>
+
+      <div class="journey__pin">
+        <div class="journey__stage container">
+          <div class="journey__steps">
+            <article class="jstep is-active" data-step="0">
+              <span class="jstep__num">1</span>
+              <p class="jstep__kicker">Etapa 01 · Descoberta</p>
+              <h3>Ser <em>encontrado</em> por quem precisa de você.</h3>
+              <p>Anúncios no Instagram e Facebook (Meta Ads) e no Google Ads colocam sua marca na frente do público certo — no momento em que ele procura ou rola o feed.</p>
+              <ul class="tags"><li>Meta Ads</li><li>Google Ads</li><li>Público segmentado</li></ul>
+            </article>
+            <article class="jstep" data-step="1">
+              <span class="jstep__num">2</span>
+              <p class="jstep__kicker">Etapa 02 · Atenção</p>
+              <h3>Prender o olhar em <em>segundos</em>.</h3>
+              <p>Criativos, vídeos e mensagens que param o scroll. Comunicação pensada para o seu cliente ideal sentir: “isso é para mim”.</p>
+              <ul class="tags"><li>Criativos</li><li>Vídeos</li><li>Copy</li></ul>
+            </article>
+            <article class="jstep" data-step="2">
+              <span class="jstep__num">3</span>
+              <p class="jstep__kicker">Etapa 03 · Consideração</p>
+              <h3>Gerar <em>confiança</em> antes do contato.</h3>
+              <p>Site profissional, Google Meu Negócio otimizado e avaliações reais. Quando o cliente pesquisa, encontra uma empresa sólida.</p>
+              <ul class="tags"><li>Sites</li><li>Google Meu Negócio</li><li>Prova social</li></ul>
+            </article>
+            <article class="jstep" data-step="3">
+              <span class="jstep__num">4</span>
+              <p class="jstep__kicker">Etapa 04 · Vendas</p>
+              <h3>Transformar contatos em <em>contratos</em>.</h3>
+              <p>Implementação de CRM e processo comercial: cada lead registrado, acompanhado e com follow-up. Menos oportunidades perdidas, mais fechamentos.</p>
+              <ul class="tags"><li>CRM</li><li>Funil de vendas</li><li>Processo comercial</li></ul>
+            </article>
+            <article class="jstep" data-step="4">
+              <span class="jstep__num">5</span>
+              <p class="jstep__kicker">Etapa 05 · Apologia</p>
+              <h3>Clientes que <em>indicam</em> você.</h3>
+              <p>Pós-venda, avaliações e relacionamento que transformam clientes satisfeitos em fãs da marca — o canal de vendas mais barato que existe.</p>
+              <ul class="tags"><li>Pós-venda</li><li>Avaliações</li><li>Indicações</li></ul>
+            </article>
+          </div>
+          <ol class="journey__progress" aria-hidden="true">
+            <li class="is-active"><span>Descoberta</span></li>
+            <li><span>Atenção</span></li>
+            <li><span>Consideração</span></li>
+            <li><span>Vendas</span></li>
+            <li><span>Apologia</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVIÇOS -->
+    <section class="services" id="servicos">
+      <div class="container services__head">
+        <p class="eyebrow">O que fazemos</p>
+        <h2 class="section-title">Serviços que fazem <em>o caixa girar</em>.</h2>
+        <p class="section-lead">Cada serviço é uma engrenagem da jornada. Juntos, viram uma máquina de vendas.</p>
+      </div>
+
+      <div class="services__list container">
+
+        <!-- Meta Ads -->
+        <article class="svc" data-svc="meta">
+          <div class="svc__visual">
+            <div class="vis vis--meta">
+              <div class="phone">
+                <div class="phone__notch"></div>
+                <div class="post">
+                  <div class="post__head"><span class="avatar"><span class="logo-mark"></span></span><div><b>Sua Empresa</b><small>Patrocinado</small></div></div>
+                  <div class="post__media"><div class="post__shine"></div><span class="post__big">-30%</span><span class="post__small">agende hoje</span></div>
+                  <div class="post__cta">Saiba mais <span>›</span></div>
+                  <div class="post__actions"><span class="heart">♥</span><span>💬</span><span>➤</span></div>
+                </div>
+                <div class="hearts"></div>
+              </div>
+              <div class="float-card float-card--a"><small>Alcance</small><b>+<span class="tick" data-to="48">0</span>mil</b></div>
+              <div class="float-card float-card--b"><small>Leads hoje</small><b class="tick-live">27</b><div class="mini-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+            </div>
+          </div>
+          <div class="svc__body">
+            <span class="svc__idx">01</span>
+            <h3>Meta Ads</h3>
+            <p>Campanhas no Instagram e Facebook com segmentação precisa, criativos que convertem e otimização diária. Seu anúncio aparece para quem tem perfil de comprar.</p>
+            <ul><li>Estratégia de campanhas e públicos</li><li>Remarketing e públicos semelhantes</li><li>Relatórios claros de resultado</li></ul>
+          </div>
+        </article>
+
+        <!-- Google Ads -->
+        <article class="svc" data-svc="google">
+          <div class="svc__visual">
+            <div class="vis vis--google">
+              <div class="gsearch">
+                <div class="gsearch__bar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span class="typed" data-text="empresa de confiança perto de mim"></span><i class="caret"></i></div>
+                <div class="gresult gresult--ad"><small><b>Patrocinado</b> · suaempresa.com.br</small><b>Sua Empresa — Atendimento Rápido</b><span>Orçamento em minutos. Atendimento especializado.</span></div>
+                <div class="gresult"><small>concorrente.com.br</small><b>Concorrente A</b><span>—</span></div>
+                <div class="gresult"><small>outro-site.com</small><b>Concorrente B</b><span>—</span></div>
+              </div>
+              <div class="float-card float-card--chart">
+                <small>Cliques no anúncio</small>
+                <svg viewBox="0 0 200 80" class="spark"><path class="spark__area" d="M0 70 L20 66 L40 62 L60 64 L80 50 L100 46 L120 38 L140 30 L160 26 L180 14 L200 8 L200 80 L0 80Z"/><path class="spark__line" d="M0 70 L20 66 L40 62 L60 64 L80 50 L100 46 L120 38 L140 30 L160 26 L180 14 L200 8"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="svc__body">
+            <span class="svc__idx">02</span>
+            <h3>Google Ads</h3>
+            <p>Apareça no topo do Google exatamente quando o cliente pesquisa pelo seu serviço. Intenção de compra alta, custo controlado e foco em contatos qualificados.</p>
+            <ul><li>Rede de pesquisa e Performance Max</li><li>Palavras-chave com intenção de compra</li><li>Acompanhamento de conversões</li></ul>
+          </div>
+        </article>
+
+        <!-- Sites -->
+        <article class="svc" data-svc="site">
+          <div class="svc__visual">
+            <div class="vis vis--site">
+              <div class="browser">
+                <div class="browser__bar"><i></i><i></i><i></i><span>Esquadri Zen · esquadrias e vidraçaria</span></div>
+                <div class="site-shot"><img src="assets/sites/site-exemplo.webp" alt="Site da Esquadri Zen, esquadrias e vidraçaria, criado pela Vortex Company" width="1400" height="646" loading="lazy"></div>
+              </div>
+              <div class="float-card float-card--speed"><small>Velocidade</small><b><span class="tick" data-to="98">0</span>/100</b><div class="ring"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15"/><circle class="ring__val" cx="18" cy="18" r="15"/></svg></div></div>
+            </div>
+          </div>
+          <div class="svc__body">
+            <span class="svc__idx">03</span>
+            <h3>Criação de Sites</h3>
+            <p>Sites e landing pages rápidos, bonitos e feitos para converter. Estrutura pensada para levar o visitante direto ao WhatsApp ou ao formulário.</p>
+            <ul><li>Design profissional e responsivo</li><li>Otimizado para anúncios e SEO</li><li>Integração com WhatsApp e CRM</li></ul>
+          </div>
+        </article>
+
+        <!-- CRM -->
+        <article class="svc" data-svc="crm">
+          <div class="svc__visual">
+            <div class="vis vis--crm">
+              <div class="kanban">
+                <div class="kcol"><h5>Novo lead</h5><div class="kcard"></div><div class="kcard"></div><div class="kcard"></div></div>
+                <div class="kcol"><h5>Em contato</h5><div class="kcard"></div><div class="kcard"></div></div>
+                <div class="kcol"><h5>Proposta</h5><div class="kcard"></div></div>
+                <div class="kcol kcol--won"><h5>Fechado ✓</h5><div class="kcard"></div></div>
+                <div class="kcard kcard--moving"><b>Novo cliente</b><small>R$ ••••</small></div>
+              </div>
+              <div class="float-card float-card--crm"><small>Follow-up automático</small><b>Enviado ✓</b></div>
+            </div>
+          </div>
+          <div class="svc__body">
+            <span class="svc__idx">04</span>
+            <h3>Implementação de CRM</h3>
+            <p>Organizamos seu comercial: funil de vendas, etapas, tags, automações e cadência de follow-up. Você enxerga cada oportunidade e para de perder vendas por esquecimento.</p>
+            <ul><li>Funil e etapas personalizadas</li><li>Automações e mensagens padrão</li><li>Processo comercial e treinamento</li></ul>
+          </div>
+        </article>
+
+        <!-- Vídeos -->
+        <article class="svc" data-svc="video">
+          <div class="svc__visual">
+            <div class="vis vis--video">
+              <div class="player">
+                <div class="player__screen">
+                  <video class="player__video" autoplay poster="assets/video/video-motion-poster.jpg" muted loop playsinline preload="metadata" aria-label="Vídeo em motion graphics da Vortex Company"><source src="assets/video/video-motion.mp4" type="video/mp4"><source src="assets/video/video-motion.webm" type="video/webm"></video>
+                  <span class="rec">● Motion graphics</span>
+                  <span class="player__time"><span class="player__cur">0:00</span> / 0:10</span>
+                </div>
+                <div class="timeline">
+                  <div class="timeline__track t1"><i></i><i></i><i></i><i></i></div>
+                  <div class="timeline__track t2"><i></i><i></i><i></i></div>
+                  <div class="timeline__wave"></div>
+                  <div class="playhead"></div>
+                </div>
+              </div>
+              <div class="float-card float-card--views"><small>Visualizações</small><b><span class="tick" data-to="12">0</span>,4 mil</b></div>
+            </div>
+          </div>
+          <div class="svc__body">
+            <span class="svc__idx">05</span>
+            <h3>Criação de Vídeos</h3>
+            <p>Vídeos para anúncios, reels e institucionais com roteiro estratégico. Conteúdo que prende a atenção nos primeiros segundos e conduz para a ação.</p>
+            <ul><li>Roteiros focados em conversão</li><li>Edição dinâmica para Reels e anúncios</li><li>Motion e legendas</li></ul>
+          </div>
+        </article>
+
+        <!-- Google Meu Negócio -->
+        <article class="svc" data-svc="gmb">
+          <div class="svc__visual">
+            <div class="vis vis--gmb">
+              <div class="map">
+                <svg class="map__roads" viewBox="0 0 400 300" preserveAspectRatio="none"><path d="M0 220 C120 200 160 120 400 140"/><path d="M80 0 C100 120 160 200 140 300"/><path d="M260 0 C250 100 300 200 380 300"/><path d="M0 80 L400 60"/></svg>
+                <span class="pin pin--ghost" style="left:22%;top:30%"></span>
+                <span class="pin pin--ghost" style="left:72%;top:64%"></span>
+                <span class="pin pin--ghost" style="left:30%;top:74%"></span>
+                <span class="pin pin--main"><b>1</b></span>
+                <span class="pulse"></span>
+              </div>
+              <div class="gchip"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>desentupidora perto de mim</div>
+              <div class="lp is-ranked" aria-label="Exemplo: perfil otimizado no Google Maps subindo para o primeiro lugar">
+                <div class="lp__head"><b>Resultados no mapa</b><span class="lp__tag">Exemplo</span></div>
+                <div class="lp__list">
+                  <div class="lp__item lp__item--star" style="--pos:0">
+                    <span class="lp__rank">1º</span>
+                    <div class="lp__info">
+                      <b>Desentupidora Pro 24h</b>
+                      <span class="lp__rating"><em>4,9</em><span class="lp__stars"><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i></span><small>(312)</small></span>
+                      <small>Desentupidora · <strong>Aberto 24 horas</strong></small>
+                    </div>
+                    <span class="lp__badge">Perfil otimizado</span>
+                    <div class="lp__actions"><span>Ligar</span><span>Rotas</span></div>
+                  </div>
+                  <div class="lp__item" style="--pos:1">
+                    <span class="lp__rank">2º</span>
+                    <div class="lp__info"><b>Concorrente A</b><span class="lp__rating"><em>4,1</em><span class="lp__stars"><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><i class=""><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i></span><small>(38)</small></span><small>Desentupidora · Fecha às 18:00</small></div>
+                  </div>
+                  <div class="lp__item" style="--pos:2">
+                    <span class="lp__rank">3º</span>
+                    <div class="lp__info"><b>Concorrente B</b><span class="lp__rating"><em>3,8</em><span class="lp__stars"><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><i class="on"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><i class=""><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i></span><small>(12)</small></span><small>Desentupidora · Fechado</small></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="svc__body">
+            <span class="svc__idx">06</span>
+            <h3>Google Meu Negócio</h3>
+            <p>Implementação e otimização do seu perfil no Google para aparecer no mapa da sua região, receber mais ligações, rotas e avaliações de clientes.</p>
+            <ul><li>Criação e verificação do perfil</li><li>Otimização para buscas locais</li><li>Estratégia de avaliações</li></ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- COMO TRABALHAMOS -->
+    <section class="process">
+      <div class="container">
+        <p class="eyebrow">Como trabalhamos</p>
+        <h2 class="section-title">Do diagnóstico ao <em>crescimento</em>.</h2>
+        <div class="process__line"><span></span></div>
+        <div class="process__grid">
+          <div class="pstep reveal-up"><b>01</b><h4>Diagnóstico</h4><p>Entendemos seu negócio, seus números e onde as vendas estão escapando.</p></div>
+          <div class="pstep reveal-up"><b>02</b><h4>Estratégia</h4><p>Desenhamos a jornada ideal do seu cliente e o plano de canais e investimento.</p></div>
+          <div class="pstep reveal-up"><b>03</b><h4>Execução</h4><p>Campanhas, site, CRM e conteúdo no ar — tudo conectado e rastreado.</p></div>
+          <div class="pstep reveal-up"><b>04</b><h4>Otimização</h4><p>Acompanhamento constante e ajustes com base em dados para escalar o que funciona.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEPOIMENTOS -->
+    <section class="testimonials" id="depoimentos">
+      <div class="container">
+        <p class="eyebrow">Quem confia na Vortex</p>
+        <h2 class="section-title">Feedbacks de quem <em>já cresceu</em> com a gente.</h2>
+        <p class="section-lead">Resultados reais que nossos clientes compartilharam com a gente. Toque em uma imagem para ampliar.</p>
+
+        <!-- Depoimentos em texto: preenchidos por assets/js/data.js -->
+        <div class="reviews" id="reviews" hidden></div>
+
+        <!-- Galeria de feedbacks (prints de clientes): preenchida por assets/js/data.js -->
+        <div class="fb" id="feedbacks" hidden>
+          <button class="fb__arrow fb__arrow--prev" aria-label="Feedback anterior">‹</button>
+          <div class="fb__track" id="feedbacksGrid"></div>
+          <button class="fb__arrow fb__arrow--next" aria-label="Próximo feedback">›</button>
+          <div class="fb__dots" id="fbDots" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visualizador de feedbacks -->
+    <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Feedback ampliado">
+      <button class="lightbox__close" aria-label="Fechar">×</button>
+      <button class="lightbox__nav lightbox__nav--prev" aria-label="Anterior">‹</button>
+      <figure class="lightbox__fig"><img alt=""><figcaption></figcaption></figure>
+      <button class="lightbox__nav lightbox__nav--next" aria-label="Próximo">›</button>
+    </div>
+
+    <!-- CTA -->
+    <section class="cta">
+      <div class="container cta__inner">
+        <p class="eyebrow">Próximo passo</p>
+        <h2 class="cta__title"><span class="line"><span>Vamos fazer sua</span></span><span class="line"><span>empresa <em>girar</em>?</span></span></h2>
+        <p class="section-lead">Conte para a gente sobre o seu negócio. Em uma conversa rápida mostramos onde estão as oportunidades de venda.</p>
+        <a class="btn btn--wa btn--xl magnetic" data-wa href="#" target="_blank" rel="noopener">
+          <svg class="wa-ico" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 6.9L3 29l6.5-2c1.9 1 4.1 1.6 6.5 1.6 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.3c-2.1 0-4.1-.6-5.8-1.7l-.4-.2-3.9 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5 10 9.9 5.2 16 5.2S27 10 27 15.9s-4.9 10.4-11 10.4zm6-7.8c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1.1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.7-1.7-1-.9-1.7-2-1.9-2.3-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.3.3-.6.1-.2.1-.4 0-.6l-1-2.5c-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.2 2.4 3.7 5.9 5.1 2.9 1.1 3.5.9 4.1.8.6-.1 2-.8 2.3-1.6.3-.8.3-1.5.2-1.6-.1-.3-.4-.4-.7-.5z"/></svg>
+          <span>Chamar no WhatsApp</span>
+        </a>
+        <p class="cta__phone">(47) 99162-5752</p>
+      </div>
+    </section>
+
+    <!-- LOCALIZAÇÃO -->
+    <section class="location" id="contato">
+      <div class="container location__grid">
+        <div class="location__info">
+          <p class="eyebrow">Onde estamos</p>
+          <h2 class="section-title">Atendimento <em>próximo</em>,<br>resultado em todo o Brasil.</h2>
+
+          <div class="status" id="openStatus"><span class="status__dot"></span><span class="status__text">Verificando horário…</span></div>
+
+          <dl class="hours">
+            <div data-dias="1,2,3,4,5,6"><dt>Segunda a sábado</dt><dd>09h às 18h</dd></div>
+            <div data-dias="0"><dt>Domingo</dt><dd>Fechado</dd></div>
+          </dl>
+
+          <div class="contact-list">
+            <a data-wa href="#" target="_blank" rel="noopener"><small>WhatsApp</small><b>(47) 99162-5752</b></a>
+            <a href="https://maps.google.com/?cid=4198462059883251963" target="_blank" rel="noopener"><small>Google Maps</small><b>Vortex Company - Agência de Marketing</b></a>
+          </div>
+        </div>
+        <div class="location__map reveal-up">
+          <iframe title="Mapa — Vortex Company" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d228988.5698038319!2d-48.962909350000004!3d-26.26340285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x439937723a6a7895%3A0x3a43eeffc24bc8fb!2sVortex%20Company%20-%20Ag%C3%AAncia%20de%20Marketing!5e0!3m2!1spt-BR!2sbr!4v1792790711624!5m2!1spt-BR!2sbr" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <span class="footer__logo"></span>
+          <p>Agência de marketing e vendas. Ajudamos empresas a aumentar o faturamento com anúncios, CRM e processos comerciais.</p>
+        </div>
+        <div class="footer__cols">
+          <div><h6>Navegação</h6><a href="#sobre">Sobre</a><a href="#jornada">Método</a><a href="#servicos">Serviços</a><a href="#depoimentos">Clientes</a><a href="#contato">Contato</a></div>
+          <div><h6>Serviços</h6><span>Meta Ads</span><span>Google Ads</span><span>Criação de Sites</span><span>Implementação de CRM</span><span>Criação de Vídeos</span><span>Google Meu Negócio</span></div>
+          <div><h6>Contato</h6><a data-wa href="#" target="_blank" rel="noopener">(47) 99162-5752</a><span>Seg a sáb · 09h às 18h</span><span>Domingo · Fechado</span></div>
+        </div>
+      </div>
+      <div class="footer__giant" aria-hidden="true">VORTEX</div>
+      <div class="footer__bottom">
+        <span>© <span id="year">2026</span> Vortex Company · Todos os direitos reservados</span>
+        <span>CNPJ 68.063.725/0001-62</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp flutuante -->
+  <a class="wa-float" data-wa href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 6.9L3 29l6.5-2c1.9 1 4.1 1.6 6.5 1.6 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.3c-2.1 0-4.1-.6-5.8-1.7l-.4-.2-3.9 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5 10 9.9 5.2 16 5.2S27 10 27 15.9s-4.9 10.4-11 10.4zm6-7.8c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1.1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.7-1.7-1-.9-1.7-2-1.9-2.3-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.3.3-.6.1-.2.1-.4 0-.6l-1-2.5c-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.2 2.4 3.7 5.9 5.1 2.9 1.1 3.5.9 4.1.8.6-.1 2-.8 2.3-1.6.3-.8.3-1.5.2-1.6-.1-.3-.4-.4-.7-.5z"/></svg>
+    <span class="wa-float__label">Fale conosco</span>
+  </a>
+
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="assets/vendor/lenis.min.js"></script>
+  <script src="assets/js/data.js?v=20261024c"></script>
+  <script type="importmap">{ "imports": { "three": "./assets/vendor/three.module.min.js" } }</script>
+  <script type="module" src="assets/js/cena3d.js?v=20261024c"></script>
+  <script src="assets/js/main.js?v=20261024c"></script>
+</body>
+</html>
