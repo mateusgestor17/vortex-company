@@ -14,7 +14,93 @@
 
   /* ---------- Dados básicos ---------- */
   const waUrl = `https://wa.me/${DATA.whatsapp || "5547991625752"}?text=${encodeURIComponent(DATA.whatsappMessage || "Olá! Vim pelo site da Vortex Company.")}`;
-  $$("[data-wa]").forEach((a) => (a.href = waUrl));
+  $$("[data-wa]").forEach((a) => (a.href = waUrl)); // sem JS, o link continua indo direto ao WhatsApp
+
+  /* ---------- Formulário antes do WhatsApp ---------- */
+  const lead = $("#leadModal"), form = $("#leadForm"), errBox = $("#leadError"), interestEl = $("#leadInterest");
+  let interesse = "", lastFocusLead = null;
+  const store = { get() { try { return JSON.parse(localStorage.getItem("vortexLead") || "{}"); } catch (e) { return {}; } },
+                  set(v) { try { localStorage.setItem("vortexLead", JSON.stringify(v)); } catch (e) {} } };
+  function openLead(btn) {
+    interesse = btn?.dataset.interesse || "";
+    interestEl.hidden = !interesse;
+    interestEl.textContent = interesse ? "Interesse: " + interesse : "";
+    const saved = store.get();
+    if (saved.nome && !form.nome.value) form.nome.value = saved.nome;
+    if (saved.instagram && !form.instagram.value) form.instagram.value = saved.instagram;
+    if (saved.segmento && !form.segmento.value) form.segmento.value = saved.segmento;
+    if (saved.faturamento && !form.querySelector('input[name="faturamento"]:checked')) {
+      const r = form.querySelector(`input[name="faturamento"][value="${saved.faturamento}"]`); if (r) r.checked = true;
+    }
+    errBox.hidden = true;
+    lastFocusLead = document.activeElement;
+    lead.hidden = false;
+    document.documentElement.style.overflow = "hidden";
+    window.__lenis?.stop();
+    setTimeout(() => (form.nome.value ? form.querySelector("button[type=submit]") : form.nome).focus(), 60);
+  }
+  function closeLead() {
+    lead.hidden = true;
+    document.documentElement.style.overflow = "";
+    window.__lenis?.start();
+    lastFocusLead?.focus?.();
+  }
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-wa]");
+    if (!btn) return;
+    e.preventDefault();
+    openLead(btn);
+  });
+  $$("[data-close]", lead).forEach((el) => el.addEventListener("click", closeLead));
+  document.addEventListener("keydown", (e) => {
+    if (lead.hidden) return;
+    if (e.key === "Escape") closeLead();
+    if (e.key === "Tab") { // mantém o foco dentro do formulário
+      const f = $$("button, input", lead).filter((el) => !el.disabled && el.offsetParent !== null);
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+  form.instagram.addEventListener("input", () => (form.instagram.value = form.instagram.value.replace(/^@+/, "").replace(/\s/g, "")));
+  $$("input", form).forEach((el) => ["input", "change"].forEach((ev) => el.addEventListener(ev, () => {
+    el.classList.remove("is-invalid");
+    if (el.type === "radio") $(".chips", form).classList.remove("is-invalid");
+    errBox.hidden = true;
+  })));
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const nome = form.nome.value.trim().replace(/\s+/g, " ");
+    const instagram = form.instagram.value.trim().replace(/^@+/, "").replace(/^https?:\/\/(www\.)?instagram\.com\//i, "").replace(/\/.*$/, "");
+    const segmento = form.segmento.value.trim();
+    const fat = form.querySelector('input[name="faturamento"]:checked')?.value || "";
+    const faltando = [];
+    if (nome.split(" ").length < 2) { faltando.push("nome completo"); form.nome.classList.add("is-invalid"); }
+    if (!instagram) { faltando.push("Instagram"); form.instagram.classList.add("is-invalid"); }
+    if (!segmento) { faltando.push("segmento"); form.segmento.classList.add("is-invalid"); }
+    if (!fat) { faltando.push("faturamento mensal"); $(".chips", form).classList.add("is-invalid"); }
+    if (faltando.length) {
+      errBox.textContent = "Falta preencher: " + faltando.join(", ") + ".";
+      errBox.hidden = false;
+      return;
+    }
+    store.set({ nome, instagram, segmento, faturamento: fat });
+    const msg = [
+      "Olá! Vim pelo site da Vortex Company e quero saber como vender mais.",
+      "",
+      "*Nome:* " + nome,
+      "*Instagram:* @" + instagram,
+      "*Segmento:* " + segmento,
+      "*Faturamento mensal:* " + fat,
+      interesse ? "*Interesse:* " + interesse : "",
+    ].filter((l, i, arr) => l || i === 1).join("\n");
+    const url = `https://wa.me/${DATA.whatsapp || "5547991625752"}?text=${encodeURIComponent(msg)}`;
+    // (com "noopener" o window.open sempre devolve null; por isso o opener é zerado à mão)
+    const w = window.open(url, "_blank");
+    if (w) w.opener = null;
+    else location.href = url; // bloqueador de pop-up ou app que não abre abas
+    closeLead();
+  });
   $("#year").textContent = new Date().getFullYear();
 
   /* ---------- Depoimentos e feedbacks ---------- */

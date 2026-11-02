@@ -214,7 +214,7 @@ const material = new THREE.ShaderMaterial({
     attribute float aKind; attribute vec4 aRand;
     uniform float uTime, uMorph, uSize, uVel;
     uniform vec2 uMouse;
-    varying float vAlpha; varying float vTint;
+    varying float vAlpha; varying float vTint; varying float vH;
 
     float w(float i, float m) { float d = clamp(1.0 - abs(m - i), 0.0, 1.0); return d * d * (3.0 - 2.0 * d); }
 
@@ -247,20 +247,25 @@ const material = new THREE.ShaderMaterial({
       gl_PointSize = size / -mv.z;
       vAlpha = (0.35 + 0.65 * aRand.w) * smoothstep(12.0, 3.0, -mv.z);
       vTint = aRand.y;
+      vH = clamp((pos.y + 1.7) / 3.6, 0.0, 1.0);
     }
   `,
   fragmentShader: /* glsl */ `
     uniform float uOpacity;
-    varying float vAlpha; varying float vTint;
+    varying float vAlpha; varying float vTint; varying float vH;
     void main() {
       vec2 uv = gl_PointCoord - 0.5;
       float d = length(uv);
       if (d > 0.5) discard;
       float core = smoothstep(0.5, 0.0, d);
       core = pow(core, 1.8);
-      vec3 col = mix(vec3(1.0), vec3(0.78, 0.84, 1.0), step(0.86, vTint));
-      col = mix(col, vec3(1.0, 0.93, 0.85), step(0.96, vTint));
-      gl_FragColor = vec4(col, core * vAlpha * uOpacity * 0.9);
+      // azul embaixo → roxo em cima, com pontos ciano e faíscas brancas
+      vec3 blue = vec3(0.20, 0.45, 1.0), violet = vec3(0.63, 0.34, 1.0), cyan = vec3(0.40, 0.85, 1.0);
+      vec3 col = mix(blue, violet, smoothstep(0.1, 0.95, vH + (vTint - 0.5) * 0.35));
+      col = mix(col, cyan, step(0.88, vTint) * 0.7);
+      col = mix(col, vec3(1.0), step(0.95, vTint) * 0.85);
+      col = mix(col, vec3(1.0), pow(core, 5.0) * 0.35); // núcleo mais claro = brilho
+      gl_FragColor = vec4(col, core * vAlpha * uOpacity);
     }
   `,
 });
@@ -278,7 +283,7 @@ for (let i = 0; i < dustCount; i++) {
   dpos[i * 3] = rand(-9, 9); dpos[i * 3 + 1] = rand(-6, 6); dpos[i * 3 + 2] = rand(-8, 2);
 }
 dustGeo.setAttribute("position", new THREE.BufferAttribute(dpos, 3));
-const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.018, transparent: true, opacity: 0.35, depthWrite: false, blending: THREE.AdditiveBlending }));
+const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({ color: 0x8fa2ff, size: 0.02, transparent: true, opacity: 0.45, depthWrite: false, blending: THREE.AdditiveBlending }));
 scene.add(dust);
 
 /* ---------- interação ---------- */
