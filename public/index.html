@@ -21,7 +21,7 @@
 
   <link rel="preload" href="assets/fonts/sora-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261118b">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261118c">
 
   <script type="application/ld+json">
   {
@@ -79,9 +79,10 @@
     <!-- HERO -->
     <section class="hero" id="inicio">
       <div class="hero__inner container">
-        <p class="kicker reveal-up"><span class="bar"></span>Para donos de vidraçarias e esquadrias<span class="bar"></span></p>
+        <p class="kicker reveal-up"><span class="bar"></span>Jornada Vortex · marketing e vendas<span class="bar"></span></p>
         <h1 class="hero__title">
-          <span class="line"><span>Pare de perder orçamentos.</span></span>
+          <span class="line"><span>Sua vidraçaria ou esquadria</span></span>
+          <span class="line"><span>perdendo orçamentos?</span></span>
           <span class="line"><span>Transforme cada um em</span></span>
           <span class="line"><span><em>venda com dinheiro no caixa.</em></span></span>
         </h1>
@@ -442,32 +443,34 @@
     <form class="lead-form" novalidate>
       <div class="lead-form__row">
         <label class="field"><span>Seu nome</span><input name="nome" type="text" autocomplete="name" placeholder="Nome e sobrenome" required></label>
-        <label class="field"><span>Nome da empresa</span><input name="empresa" type="text" autocomplete="organization" placeholder="Ex.: Vidraçaria Cristal" required></label>
+        <label class="field"><span>E-mail</span><input name="email" type="email" autocomplete="email" inputmode="email" placeholder="voce@empresa.com.br" required></label>
       </div>
       <div class="lead-form__row">
-        <label class="field"><span>E-mail</span><input name="email" type="email" autocomplete="email" inputmode="email" placeholder="voce@empresa.com.br" required></label>
+        <label class="field"><span>Nome da empresa</span><input name="empresa" type="text" autocomplete="organization" placeholder="Ex.: Vidraçaria Cristal" required></label>
         <label class="field"><span>WhatsApp</span><input name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" placeholder="(00) 00000-0000" required></label>
       </div>
-      <fieldset class="field">
-        <legend>Faturamento mensal</legend>
-        <div class="chips">
-          <label><input type="radio" name="faturamento" value="Até R$ 50 mil" required><span>Até R$ 50 mil</span></label>
-          <label><input type="radio" name="faturamento" value="De R$ 50 mil a R$ 75 mil"><span>R$ 50 a 75 mil</span></label>
-          <label><input type="radio" name="faturamento" value="De R$ 75 mil a R$ 100 mil"><span>R$ 75 a 100 mil</span></label>
-          <label><input type="radio" name="faturamento" value="De R$ 100 mil a R$ 300 mil"><span>R$ 100 a 300 mil</span></label>
-          <label><input type="radio" name="faturamento" value="Mais de R$ 300 mil"><span>Mais de R$ 300 mil</span></label>
-        </div>
-      </fieldset>
-      <fieldset class="field">
-        <legend>Possui sócio?</legend>
-        <div class="chips chips--yn">
-          <label><input type="radio" name="socio" value="Sim" required><span>Sim</span></label>
-          <label><input type="radio" name="socio" value="Não"><span>Não</span></label>
-        </div>
-      </fieldset>
+      <div class="lead-form__row lead-form__row--selects">
+        <label class="field"><span>Faturamento mensal</span>
+          <select name="faturamento" required>
+            <option value="" selected disabled>Selecione</option>
+            <option value="Até R$ 50 mil">Até R$ 50 mil</option>
+            <option value="De R$ 50 mil a R$ 75 mil">De R$ 50 mil a R$ 75 mil</option>
+            <option value="De R$ 75 mil a R$ 100 mil">De R$ 75 mil a R$ 100 mil</option>
+            <option value="De R$ 100 mil a R$ 300 mil">De R$ 100 mil a R$ 300 mil</option>
+            <option value="Mais de R$ 300 mil">Mais de R$ 300 mil</option>
+          </select>
+        </label>
+        <label class="field"><span>Possui sócio?</span>
+          <select name="socio" required>
+            <option value="" selected disabled>Selecione</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+          </select>
+        </label>
+      </div>
       <p class="lead-form__error" role="alert" hidden></p>
       <button class="btn btn--primary btn--lg btn--block" type="submit"><span>Quero meu diagnóstico gratuito</span><svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <p class="lead-form__note">Ao enviar, você continua a conversa com a Vortex no WhatsApp. Seus dados são usados só para o nosso atendimento.</p>
+      <p class="lead-form__note">Você continua a conversa com a Vortex no WhatsApp.</p>
     </form>
   </template>
 
@@ -475,8 +478,7 @@
     <div class="lead__backdrop" data-close></div>
     <div class="lead__panel" role="dialog" aria-modal="true" aria-labelledby="leadTitle">
       <button class="lead__close" type="button" data-close aria-label="Fechar">×</button>
-      <span class="lead__mark logo-mark" aria-hidden="true"></span>
-      <h2 id="leadTitle" class="lead__title">Diagnóstico <em>gratuito</em></h2>
+            <h2 id="leadTitle" class="lead__title">Diagnóstico <em>gratuito</em></h2>
       <p class="lead__sub" id="leadSub">Responda rapidinho e continue a conversa com a gente no WhatsApp.</p>
       <div data-form-slot="modal"></div>
     </div>
@@ -497,9 +499,9 @@
   <script src="assets/vendor/gsap.min.js"></script>
   <script src="assets/vendor/ScrollTrigger.min.js"></script>
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="assets/js/data.js?v=20261118b"></script>
+  <script src="assets/js/data.js?v=20261118c"></script>
   <script type="importmap">{ "imports": { "three": "./assets/vendor/three.module.min.js" } }</script>
-  <script type="module" src="assets/js/vortex3d.js?v=20261118b"></script>
-  <script src="assets/js/main.js?v=20261118b"></script>
+  <script type="module" src="assets/js/vortex3d.js?v=20261118c"></script>
+  <script src="assets/js/main.js?v=20261118c"></script>
 </body>
 </html>

@@ -124,11 +124,10 @@
     const form = $("form", slot), err = $(".lead-form__error", form);
     const saved = store.get();
     ["nome", "empresa", "email", "whatsapp"].forEach((k) => { if (saved[k]) form[k].value = saved[k]; });
-    ["faturamento", "socio"].forEach((k) => { const r = saved[k] && form.querySelector(`input[name="${k}"][value="${saved[k]}"]`); if (r) r.checked = true; });
+    ["faturamento", "socio"].forEach((k) => { if (saved[k] && [...form[k].options].some((o) => o.value === saved[k])) form[k].value = saved[k]; });
     form.whatsapp.addEventListener("input", () => (form.whatsapp.value = maskPhone(form.whatsapp.value)));
-    $$("input", form).forEach((el) => ["input", "change"].forEach((ev) => el.addEventListener(ev, () => {
+    $$("input, select", form).forEach((el) => ["input", "change"].forEach((ev) => el.addEventListener(ev, () => {
       el.classList.remove("is-invalid");
-      if (el.type === "radio") el.closest(".chips").classList.remove("is-invalid");
       err.hidden = true;
     })));
     form.addEventListener("submit", (e) => {
@@ -138,8 +137,8 @@
         empresa: form.empresa.value.trim(),
         email: form.email.value.trim(),
         whatsapp: form.whatsapp.value.trim(),
-        faturamento: form.querySelector('input[name="faturamento"]:checked')?.value || "",
-        socio: form.querySelector('input[name="socio"]:checked')?.value || "",
+        faturamento: form.faturamento.value,
+        socio: form.socio.value,
       };
       const faltando = [];
       const bad = (name, label) => { faltando.push(label); form[name].classList?.add("is-invalid"); };
@@ -147,8 +146,8 @@
       if (v.empresa.length < 2) bad("empresa", "nome da empresa");
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) bad("email", "e-mail válido");
       if (v.whatsapp.replace(/\D/g, "").length < 10) bad("whatsapp", "WhatsApp com DDD");
-      if (!v.faturamento) { faltando.push("faturamento mensal"); form.querySelector('input[name="faturamento"]').closest(".chips").classList.add("is-invalid"); }
-      if (!v.socio) { faltando.push("se possui sócio"); form.querySelector('input[name="socio"]').closest(".chips").classList.add("is-invalid"); }
+      if (!v.faturamento) bad("faturamento", "faturamento mensal");
+      if (!v.socio) bad("socio", "se possui sócio");
       if (faltando.length) { err.textContent = "Falta preencher: " + faltando.join(", ") + "."; err.hidden = false; return; }
       store.set(v);
       try { localStorage.setItem("vortexSent", "1"); } catch (err) {}
@@ -213,7 +212,7 @@
     if (lead.hidden) return;
     if (e.key === "Escape") closeLead();
     if (e.key === "Tab") { // mantém o foco dentro do formulário
-      const f = $$("button, input", lead).filter((el) => !el.disabled && el.offsetParent !== null);
+      const f = $$("button, input, select", lead).filter((el) => !el.disabled && el.offsetParent !== null);
       const first = f[0], last = f[f.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
@@ -454,7 +453,7 @@
     const xd = gsap.quickTo(dot, "x", { duration: 0.1 }), yd = gsap.quickTo(dot, "y", { duration: 0.1 });
     const xr = gsap.quickTo(ring, "x", { duration: 0.5, ease: "power3" }), yr = gsap.quickTo(ring, "y", { duration: 0.5, ease: "power3" });
     addEventListener("pointermove", (e) => { xd(e.clientX); yd(e.clientY); xr(e.clientX); yr(e.clientY); });
-    document.addEventListener("pointerover", (e) => cur.classList.toggle("is-hover", !!e.target.closest("a, button, summary, .chips label")));
+    document.addEventListener("pointerover", (e) => cur.classList.toggle("is-hover", !!e.target.closest("a, button, summary, select")));
     $$(".magnetic").forEach((b) => {
       const xt = gsap.quickTo(b, "x", { duration: 0.6, ease: "elastic.out(1, .4)" });
       const yt = gsap.quickTo(b, "y", { duration: 0.6, ease: "elastic.out(1, .4)" });
