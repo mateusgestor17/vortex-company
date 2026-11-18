@@ -150,7 +150,7 @@
       if (!v.socio) bad("socio", "se possui sócio");
       if (faltando.length) { err.textContent = "Falta preencher: " + faltando.join(", ") + "."; err.hidden = false; return; }
       store.set(v);
-      try { localStorage.setItem("vortexSent", "1"); } catch (err) {}
+      try { localStorage.setItem("vortexSentAt", String(Date.now())); } catch (err) {}
       const msg = [
         "Olá! Vim pelo site da Vortex e quero o diagnóstico gratuito.",
         "",
@@ -219,29 +219,46 @@
     }
   });
 
-  /* ---------- Pop-up de saída (uma vez por visita) ---------- */
+  /* ---------- Pop-up de saída ----------
+     Aparece uma vez por visita. Quem enviou o formulário não vê de novo por 7 dias.
+     Para testar: abra o site com ?popup no endereço (ex.: vortexcompanybr.com.br/?popup). */
   const leadTitle = $("#leadTitle"), leadSub = $("#leadSub");
-  const defaultTitle = leadTitle.innerHTML, defaultSub = leadSub.textContent;
-  const exitSeen = () => { try { return sessionStorage.getItem("vortexExit") === "1" || localStorage.getItem("vortexSent") === "1"; } catch (e) { return false; } };
+  const forcePopup = /[?&]popup\b/.test(location.search);
+  const DAY = 864e5;
+  const exitSeen = () => {
+    if (forcePopup) return false;
+    try {
+      if (sessionStorage.getItem("vortexExit") === "1") return true;
+      const sent = +localStorage.getItem("vortexSentAt") || 0;
+      return Date.now() - sent < 7 * DAY;
+    } catch (e) { return false; }
+  };
   const markExit = () => { try { sessionStorage.setItem("vortexExit", "1"); } catch (e) {} };
   const bootAt = Date.now();
   function exitIntent() {
-    if (exitSeen() || !lead.hidden || !lb.hidden || Date.now() - bootAt < 8000) return;
+    if (exitSeen() || !lead.hidden || !lb.hidden || menu.classList.contains("is-open") || Date.now() - bootAt < 4000) return;
     markExit();
     openLead({ dataset: { origem: "Pop-up de saída" }, hasAttribute: () => false });
     leadTitle.innerHTML = "Antes de sair, <em>um presente</em>";
-    leadSub.textContent = "Receba um diagnóstico gratuito do comercial da sua vidraçaria e descubra quantos orçamentos você está perdendo.";
+    leadSub.textContent = "Receba um diagnóstico gratuito do comercial da sua vidraçaria: onde estão os orçamentos e as vendas que você pode estar deixando passar.";
   }
-  // computador: o mouse sai pela parte de cima da janela (rumo à aba ou ao "fechar")
-  document.addEventListener("mouseout", (e) => { if (!e.relatedTarget && e.clientY <= 0) exitIntent(); });
-  // celular: depois de rolar boa parte da página, uma subida rápida (gesto de quem vai voltar ou sair)
-  let maxY = 0, lastScroll = scrollY, lastT = performance.now();
+  // computador: o mouse sai da página pela parte de cima (rumo às abas, à barra de endereço ou ao "fechar")
+  document.documentElement.addEventListener("mouseleave", (e) => { if (e.clientY < 40) exitIntent(); });
+  document.addEventListener("mouseout", (e) => { if (!e.relatedTarget && e.clientY < 40) exitIntent(); });
+  // celular: subida rápida depois de ter rolado (gesto de quem vai voltar ou sair) ou 25 s parado depois de ler boa parte
+  let maxY = 0, lastScroll = scrollY, lastT = performance.now(), idle;
   addEventListener("scroll", () => {
     const now = performance.now(), y = scrollY, v = (lastScroll - y) / Math.max(1, now - lastT); // px/ms para cima
     maxY = Math.max(maxY, y);
-    if (mm("(pointer: coarse)") && maxY > document.documentElement.scrollHeight * 0.35 && v > 2.2 && y > 300) exitIntent();
+    const deep = maxY > document.documentElement.scrollHeight * 0.3;
+    if (mm("(pointer: coarse)")) {
+      if (deep && v > 1.2 && y > 200) exitIntent();
+      clearTimeout(idle);
+      if (deep) idle = setTimeout(exitIntent, 25000);
+    }
     lastScroll = y; lastT = now;
   }, { passive: true });
+  if (forcePopup) setTimeout(exitIntent, 4200);
 
   /* ---------- Menu mobile ---------- */
   const burger = $(".nav__burger"), menu = $(".mobile-menu");
