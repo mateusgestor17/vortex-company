@@ -151,6 +151,7 @@
       if (!v.socio) { faltando.push("se possui sócio"); form.querySelector('input[name="socio"]').closest(".chips").classList.add("is-invalid"); }
       if (faltando.length) { err.textContent = "Falta preencher: " + faltando.join(", ") + "."; err.hidden = false; return; }
       store.set(v);
+      try { localStorage.setItem("vortexSent", "1"); } catch (err) {}
       const msg = [
         "Olá! Vim pelo site da Vortex e quero o diagnóstico gratuito.",
         "",
@@ -178,6 +179,8 @@
   let leadFocus = null;
   function openLead(btn) {
     origem = btn?.dataset.origem || (btn?.hasAttribute("data-wa") ? "Botão de WhatsApp" : "Site");
+    $("#leadTitle").innerHTML = "Diagnóstico <em>gratuito</em>";
+    $("#leadSub").textContent = "Responda rapidinho e continue a conversa com a gente no WhatsApp.";
     // copia o que já foi digitado no formulário da página
     ["nome", "empresa", "email", "whatsapp"].forEach((k) => { if (inlineForm[k].value && !modalForm[k].value) modalForm[k].value = inlineForm[k].value; });
     $(".lead-form__error", modalForm).hidden = true;
@@ -217,6 +220,30 @@
     }
   });
 
+  /* ---------- Pop-up de saída (uma vez por visita) ---------- */
+  const leadTitle = $("#leadTitle"), leadSub = $("#leadSub");
+  const defaultTitle = leadTitle.innerHTML, defaultSub = leadSub.textContent;
+  const exitSeen = () => { try { return sessionStorage.getItem("vortexExit") === "1" || localStorage.getItem("vortexSent") === "1"; } catch (e) { return false; } };
+  const markExit = () => { try { sessionStorage.setItem("vortexExit", "1"); } catch (e) {} };
+  const bootAt = Date.now();
+  function exitIntent() {
+    if (exitSeen() || !lead.hidden || !lb.hidden || Date.now() - bootAt < 8000) return;
+    markExit();
+    openLead({ dataset: { origem: "Pop-up de saída" }, hasAttribute: () => false });
+    leadTitle.innerHTML = "Antes de sair, <em>um presente</em>";
+    leadSub.textContent = "Receba um diagnóstico gratuito do comercial da sua vidraçaria e descubra quantos orçamentos você está perdendo.";
+  }
+  // computador: o mouse sai pela parte de cima da janela (rumo à aba ou ao "fechar")
+  document.addEventListener("mouseout", (e) => { if (!e.relatedTarget && e.clientY <= 0) exitIntent(); });
+  // celular: depois de rolar boa parte da página, uma subida rápida (gesto de quem vai voltar ou sair)
+  let maxY = 0, lastScroll = scrollY, lastT = performance.now();
+  addEventListener("scroll", () => {
+    const now = performance.now(), y = scrollY, v = (lastScroll - y) / Math.max(1, now - lastT); // px/ms para cima
+    maxY = Math.max(maxY, y);
+    if (mm("(pointer: coarse)") && maxY > document.documentElement.scrollHeight * 0.35 && v > 2.2 && y > 300) exitIntent();
+    lastScroll = y; lastT = now;
+  }, { passive: true });
+
   /* ---------- Menu mobile ---------- */
   const burger = $(".nav__burger"), menu = $(".mobile-menu");
   let lenis = null;
@@ -241,10 +268,8 @@
   }
 
   /* ---------- Sem GSAP ou com movimento reduzido: página estática ---------- */
-  const loader = $(".loader");
   if (!hasGsap || reduced) {
     document.documentElement.classList.add("reduced");
-    loader.remove();
     $$("[data-count]").forEach(countUp);
     $$(".pillar").forEach((s) => s.classList.add("is-in"));
     $(".wa-float").classList.add("is-visible");
@@ -263,8 +288,7 @@
     lenis.on("scroll", (e) => { ScrollTrigger.update(); vstate.velocity = e.velocity * 0.02; });
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
-    lenis.stop();
-    window.__lenis = lenis;
+    window.__lenis = lenis; // começa liberado: não há mais tela de carregamento
   }
   $$('a[href^="#"]:not([data-lead])').forEach((a) => a.addEventListener("click", (e) => {
     const id = a.getAttribute("href");
@@ -274,27 +298,12 @@
     lenis ? lenis.scrollTo(target, { offset: id === "#inicio" ? 0 : -20, duration: 1.6 }) : target.scrollIntoView({ behavior: "smooth" });
   }));
 
-  /* ---------- Loader + entrada ---------- */
-  document.body.classList.add("is-loading");
-  const num = $("#loaderNum"), counter = { v: 0 };
-  const intro = gsap.timeline({ paused: true });
-  intro
-    .to(".loader", { yPercent: -100, duration: 1.1, ease: "expo.inOut" })
-    .from(".hero__title .line > span", { yPercent: 110, duration: 1.3, stagger: 0.08, ease: "expo.out" }, "-=.45")
-    .to(".hero .reveal-up", { opacity: 1, y: 0, duration: 1, stagger: 0.08, ease: "expo.out" }, "-=1")
-    .from(".nav", { yPercent: -100, opacity: 0, duration: 1, ease: "expo.out" }, "-=1")
-    .add(() => {
-      document.body.classList.remove("is-loading");
-      loader.remove();
-      lenis && lenis.start();
-      $$(".hero [data-count]").forEach(countUp);
-    }, "-=.6");
-  vstate.opacity = 0;
-  gsap.to(counter, {
-    v: 100, duration: 1.6, ease: "power2.inOut",
-    onUpdate: () => { num.textContent = Math.round(counter.v); $(".loader__bar span").style.width = counter.v + "%"; },
-    onComplete: () => { intro.play(); vstate.opacity = 1; },
-  });
+  /* ---------- Entrada (sem tela de carregamento: o site abre direto) ---------- */
+  gsap.timeline({ delay: 0.05 })
+    .from(".hero__title .line > span", { yPercent: 110, duration: 1.2, stagger: 0.09, ease: "expo.out" })
+    .to(".hero .reveal-up", { opacity: 1, y: 0, duration: 1, stagger: 0.07, ease: "expo.out" }, "-=.95")
+    .from(".nav", { yPercent: -100, opacity: 0, duration: 0.9, ease: "expo.out" }, "<")
+    .add(() => $$(".hero [data-count]").forEach(countUp), "-=.6");
 
   $$("[data-count]").forEach((el) => {
     if (el.closest(".hero")) return;
@@ -351,7 +360,8 @@
   function layout() {
     const mobile = mm("(max-width: 760px)"), tablet = mm("(max-width: 1080px)");
     return {
-      hero: mobile ? { x: 0, y: 0.35, scale: 0.78, opacity: 0.5 } : tablet ? { x: 1.2, y: 0, scale: 0.9, opacity: 0.85 } : { x: 1.85, y: 0, scale: 1, opacity: 1 },
+      // no topo o redemoinho fica centralizado, atrás da headline
+      hero: mobile ? { x: 0, y: 0.25, scale: 0.8, opacity: 0.38 } : { x: 0, y: 0.05, scale: 1.08, opacity: 0.5 },
       journey: mobile ? { x: 0, y: 0.85, scale: 0.55, opacity: 1 } : tablet ? { x: 1.3, y: 0, scale: 0.78, opacity: 1 } : { x: 1.75, y: 0, scale: 0.92, opacity: 1 },
     };
   }
@@ -361,7 +371,6 @@
     const a = ease(clamp01(heroST.progress)), h = ease(clamp01(headST.progress)), p = clamp01(pinST.progress), s = clamp01(outST.progress);
     const mix = (k) => lerp(L.hero[k], L.journey[k], h);
     vstate.x = mix("x"); vstate.y = mix("y"); vstate.scale = mix("scale");
-    if (document.body.classList.contains("is-loading")) return;
     // some atrás da seção clara de dores, volta na jornada e some de novo nos pilares
     vstate.opacity = mix("opacity") * Math.max(1 - a, h) * (1 - s);
     vstate.morph = h + p * 4;
