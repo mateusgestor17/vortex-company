@@ -123,20 +123,21 @@ const shapeAttention = fill(() => {
   return [Math.cos(a) * rad * 1.05, Math.sin(a) * rad * 0.62, gauss() * 0.1];
 });
 
-/* 3 — Consideração: funil em estágios (anéis empilhados) */
+/* 3 — Consideração: uma esquadria (janela de duas folhas com vidro e reflexo) */
 const shapeConsider = fill(() => {
-  const r = Math.random();
-  if (r < 0.8) {
-    const k = (Math.random() * 6) | 0;
-    const y = 1.3 - k * 0.52;
-    const rad = 1.55 - k * 0.24;
-    const a = Math.random() * Math.PI * 2;
-    return [Math.cos(a) * (rad + gauss() * 0.03), y + gauss() * 0.025, Math.sin(a) * (rad + gauss() * 0.03)];
+  const W = 1.45, H = 1.55, r = Math.random();
+  if (r < 0.34) { // moldura externa
+    const t = Math.random() * 4, u = t % 1;
+    const p = t < 1 ? [-W + 2 * W * u, H] : t < 2 ? [W, H - 2 * H * u] : t < 3 ? [W - 2 * W * u, -H] : [-W, -H + 2 * H * u];
+    return [p[0] + gauss() * 0.035, p[1] + gauss() * 0.035, gauss() * 0.04];
   }
-  // fluxo descendo pelo centro
-  const t = Math.random();
-  const a = Math.random() * Math.PI * 2, rad = (1 - t) * 0.9 * Math.sqrt(Math.random());
-  return [Math.cos(a) * rad, 1.5 - t * 3.3, Math.sin(a) * rad];
+  if (r < 0.46) return [gauss() * 0.03, rand(-H, H), gauss() * 0.03];                 // montante central
+  if (r < 0.54) return [rand(-W, W), -0.35 + gauss() * 0.025, gauss() * 0.03];        // travessa
+  if (r < 0.68) { // reflexos diagonais no vidro
+    const k = Math.random() < 0.5 ? -0.75 : 0.7, t = rand(-0.55, 0.55);
+    return [k + t * 0.7 + gauss() * 0.02, 0.55 + t * 1.1 + gauss() * 0.02, 0.02];
+  }
+  return [rand(-W, W), rand(-H, H), gauss() * 0.015];                                   // vidro
 });
 
 /* 4 — Vendas: gráfico de barras crescendo + seta */
@@ -226,7 +227,7 @@ const material = new THREE.ShaderMaterial({
       vec3 pos = (position * w0 + p1 * w1 + p2 * w2 + p3 * w3 + p4 * w4 + p5 * w5) / ws;
 
       // redemoinho (mais rápido perto da ponta do funil)
-      float swirl = w0 * (1.0 - aKind) + w3 * 0.35 + w1 * 0.12;
+      float swirl = w0 * (1.0 - aKind) + w1 * 0.12; // a esquadria (etapa 3) fica parada
       float speed = 0.35 + 1.4 * clamp(1.0 - (pos.y + 1.6) / 3.2, 0.0, 1.0) + uVel * 2.0;
       float ang = uTime * speed * swirl;
       float c = cos(ang), s = sin(ang);
@@ -259,11 +260,10 @@ const material = new THREE.ShaderMaterial({
       if (d > 0.5) discard;
       float core = smoothstep(0.5, 0.0, d);
       core = pow(core, 1.8);
-      // azul embaixo → roxo em cima, com pontos ciano e faíscas brancas
-      vec3 blue = vec3(0.20, 0.45, 1.0), violet = vec3(0.63, 0.34, 1.0), cyan = vec3(0.40, 0.85, 1.0);
-      vec3 col = mix(blue, violet, smoothstep(0.1, 0.95, vH + (vTint - 0.5) * 0.35));
-      col = mix(col, cyan, step(0.88, vTint) * 0.7);
-      col = mix(col, vec3(1.0), step(0.95, vTint) * 0.85);
+      // Azul Vortex (#0066FF) embaixo → azul claro em cima, com faíscas brancas
+      vec3 deep = vec3(0.0, 0.40, 1.0), light = vec3(0.45, 0.68, 1.0);
+      vec3 col = mix(deep, light, smoothstep(0.05, 0.95, vH + (vTint - 0.5) * 0.3));
+      col = mix(col, vec3(1.0), step(0.9, vTint) * 0.85);
       col = mix(col, vec3(1.0), pow(core, 5.0) * 0.35); // núcleo mais claro = brilho
       gl_FragColor = vec4(col, core * vAlpha * uOpacity);
     }
@@ -283,7 +283,7 @@ for (let i = 0; i < dustCount; i++) {
   dpos[i * 3] = rand(-9, 9); dpos[i * 3 + 1] = rand(-6, 6); dpos[i * 3 + 2] = rand(-8, 2);
 }
 dustGeo.setAttribute("position", new THREE.BufferAttribute(dpos, 3));
-const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({ color: 0x8fa2ff, size: 0.02, transparent: true, opacity: 0.45, depthWrite: false, blending: THREE.AdditiveBlending }));
+const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({ color: 0x6fa3ff, size: 0.02, transparent: true, opacity: 0.4, depthWrite: false, blending: THREE.AdditiveBlending }));
 scene.add(dust);
 
 /* ---------- interação ---------- */
